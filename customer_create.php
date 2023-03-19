@@ -74,7 +74,10 @@
                 // check if any field is empty
                 if (empty($username)) {
                     $username_error = "Please enter Username";
+                } elseif (isset($username) && strlen($username) < 6) {
+                    $username_error = "Username must be at least 6 characters";
                 }
+
                 if (empty($Password)) {
                     $Password_error = "Please enter Password";
                 }
@@ -156,15 +159,8 @@
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td>Username</td>
-                    <td>
-                        <input type="text" name='username' class="form-control" value="<?php echo isset($username) ? htmlspecialchars($username) : ''; ?>" />
-                        <?php
-                        if (isset($username_error)) {
-                        ?><span class="text-danger"><?php echo $username_error; ?></span><?php
-                                                                                        } elseif (isset($username) && strlen($username) < 6) {
-                                                                                            ?><span class="text-danger">Username must be at least 6 characters</span><?php }
-                                                                                                                                                                        ?>
-                    </td>
+                    <td><input type="text" name='username' class="form-control" value="<?php echo isset($username) ? htmlspecialchars($username) : ''; ?>" />
+                        <?php if (isset($username_error)) { ?><span class="text-danger"><?php echo $username_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
