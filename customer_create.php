@@ -103,7 +103,7 @@
 
 
                     // insert query
-                    $query = "INSERT INTO products SET username=:username, Password=:Password, fname=:fname, lname=:lname, gender=:gender, dob=:dob, register=:register, status=:status "; // info insert to blindParam
+                    $query = "INSERT INTO customers SET username=:username, Password=:Password, fname=:fname, lname=:lname, gender=:gender, dob=:dob, register=:register, status=:status "; // info insert to blindParam
 
                     // prepare query for execution
                     $stmt = $con->prepare($query);
