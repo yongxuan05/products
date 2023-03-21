@@ -8,7 +8,6 @@ $password = "!G@y/dKdCJiRrIab";
 try {
     //$con is a key
     $con = new PDO("mysql:host={$host};dbname={$db_name}", $username, $password);
-    echo "Connected successfully";
 }
 
 // show error

@@ -62,13 +62,14 @@
                 // posted values
                 $username = htmlspecialchars(strip_tags($_POST['username']));
                 $Password = htmlspecialchars(strip_tags($_POST['Password']));
+                $CPassword = htmlspecialchars(strip_tags($_POST['CPassword']));
                 $fname = htmlspecialchars(strip_tags($_POST['fname']));
                 $lname = htmlspecialchars(strip_tags($_POST['lname']));
-                $gender = htmlspecialchars(strip_tags($_POST['gender']));
+                if (isset($_POST['gender'])) $gender = ($_POST['gender']);
                 $dob = htmlspecialchars(strip_tags($_POST['dob']));
-                $register = htmlspecialchars(strip_tags($_POST['register']));
-                $status = htmlspecialchars(strip_tags($_POST['status']));
+                if (isset($_POST['status'])) $status = ($_POST['status']);
 
+                $number = preg_match('@[0-9]@', $password);
 
 
                 // check if any field is empty
@@ -80,6 +81,14 @@
 
                 if (empty($Password)) {
                     $Password_error = "Please enter Password";
+                }
+                if (isset($Password) && !$number && strlen($Password) < 8) {
+                    $Password_error = "Password should be at least 8 characters in length and should include number";
+                }
+                if (empty($CPassword)) {
+                    $CPassword_error = "Please enter Confirm Password";
+                } elseif ($CPassword != $Password) {
+                    $CPassword_error = "Confirm Password must same with Password";
                 }
                 if (empty($fname)) {
                     $fname_error = "Please enter First Name";
@@ -93,16 +102,14 @@
                 if (empty($dob)) {
                     $dob_error = "Please enter Date of Birth";
                 }
-                if (empty($register)) {
-                    $register_error = "Please enter Registration Date & Time";
-                }
+
                 if (empty($status)) {
                     $status_error = "Please select your Status";
                 }
 
 
                 // check if there are any errors
-                if (!isset($username_error) && !isset($Password_error) && !isset($fname_error) && !isset($lname_error) && !isset($gender_error) && !isset($dob_error) && !isset($register_error) && !isset($status_error)) {
+                if (!isset($username_error) && !isset($Password_error) && !isset($CPassword_error) && !isset($fname_error) && !isset($lname_error) && !isset($gender_error) && !isset($dob_error) && !isset($status_error)) {
 
 
                     // insert query
@@ -118,24 +125,23 @@
                     $stmt->bindParam(':lname', $lname);
                     $stmt->bindParam(':gender', $gender);
                     $stmt->bindParam(':dob', $dob);
-                    $stmt->bindParam(':register', $register);
                     $stmt->bindParam(':status', $status);
 
 
                     // specify when this record was inserted to the database
                     $created = date('Y-m-d H:i:s');
-                    $stmt->bindParam(':created', $created);
+                    $stmt->bindParam(':register', $created);
 
                     // Execute the query
                     if ($stmt->execute()) {
                         echo "<div class='alert alert-success'>Record was saved.</div>";
                         $username = "";
                         $Password = "";
+                        $CPassword = "";
                         $fname = "";
                         $lname = "";
                         $gender = "";
                         $dob = "";
-                        $register = "";
                         $status = "";
                     } else {
                         echo "<div class='alert alert-danger'>Unable to save record. </div>";
@@ -164,12 +170,6 @@
                 </tr>
 
                 <tr>
-                    <td>Password</td>
-                    <td><input type="text" name='Password' class="form-control" value="<?php echo isset($Password) ? htmlspecialchars($Password) : ''; ?>" />
-                        <?php if (isset($Password_error)) { ?><span class="text-danger"><?php echo $Password_error; ?></span><?php } ?></td>
-                </tr>
-
-                <tr>
                     <td>First Name</td>
                     <td><input type="text" name="fname" class="form-control" value="<?php echo isset($fname) ? htmlspecialchars($fname) : ''; ?>" />
                         <?php if (isset($fname_error)) { ?><span class="text-danger"><?php echo $fname_error; ?></span><?php } ?></td>
@@ -182,16 +182,24 @@
                 </tr>
 
                 <tr>
+                    <td>Password</td>
+                    <td><input type="password" name='Password' class="form-control" value="<?php echo isset($Password) ? htmlspecialchars($Password) : ''; ?>" />
+                        <?php if (isset($Password_error)) { ?><span class="text-danger"><?php echo $Password_error; ?></span><?php } ?></td>
+                </tr>
+
+                <tr>
+                    <td>Confirm Password</td>
+                    <td><input type="password" name='CPassword' class="form-control" value="<?php echo isset($CPassword) ? htmlspecialchars($Password) : ''; ?>" />
+                        <?php if (isset($CPassword_error)) { ?><span class="text-danger"><?php echo $CPassword_error; ?></span><?php } ?></td>
+                </tr>
+
+                <tr>
                     <td>Gender</td>
                     <td>
-                        <select name="gender" class="form-control">
-                            <option value="">Select Gender</option>
-                            <option value="male" <?php if (isset($gender) && $gender == "male") echo "selected"; ?>>Male</option>
-                            <option value="female" <?php if (isset($gender) && $gender == "female") echo "selected"; ?>>Female</option>
-                        </select>
-                        <?php if (isset($gender_error)) { ?>
-                            <span class="text-danger"><?php echo $gender_error; ?></span>
-                        <?php } ?>
+                        <input type="radio" name="gender" <?php if (isset($gender) && $gender == "female") echo "checked"; ?> value="female">Female
+                        <input type="radio" name="gender" <?php if (isset($gender) && $gender == "male") echo "checked"; ?> value="male">Male
+
+                        <?php if (isset($gender_error)) { ?><span class="text-danger"><?php echo "<br> $gender_error"; ?></span><?php } ?>
                     </td>
                 </tr>
 
@@ -202,22 +210,12 @@
                 </tr>
 
                 <tr>
-                    <td>Registration Date & Time</td>
-                    <td><input type="datetime-local" name="register" class="form-control" value="<?php echo isset($register) ? htmlspecialchars($register) : ''; ?>" />
-                        <?php if (isset($register_error)) { ?><span class="text-danger"><?php echo $register_error; ?></span><?php } ?></td>
-                </tr>
-
-                <tr>
                     <td>Status</td>
                     <td>
-                        <select name="status" class="form-control">
-                            <option value="">Select Status</option>
-                            <option value="active" <?php if (isset($status) && $status == "active") echo "selected"; ?>>Active</option>
-                            <option value="inactive" <?php if (isset($status) && $status == "inactive") echo "selected"; ?>>Inactive</option>
-                        </select>
-                        <?php if (isset($status_error)) { ?>
-                            <span class="text-danger"><?php echo $status_error; ?></span>
-                        <?php } ?>
+                        <input type="radio" name="status" <?php if (isset($status) && $status == "active") echo "checked"; ?> value="active">Active
+                        <input type="radio" name="status" <?php if (isset($status) && $status == "inactive") echo "checked"; ?> value="inactive">Inactive
+
+                        <?php if (isset($status_error)) { ?><span class="text-danger"><?php echo "<br> $status_error"; ?></span><?php } ?>
                     </td>
                 </tr>
 

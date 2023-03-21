@@ -56,7 +56,7 @@
         //$_get (appear in url) and $_post (didnt appear in url) 是传送（隐形）
         if ($_POST) {
             // include database connection
-            include 'config/database.php';
+            //include 'config/database.php';
             try { //if insert wrong will go to catch
 
                 // posted values
@@ -91,7 +91,7 @@
                 //   $expired_date_error = "Please enter expired date";
                 //}
 
-                // check if expired date is later than manufacture date
+                // check if expired date  fill up & later than manufacture date
                 if (!empty($expired_date)) {
                     if (strtotime($expired_date) <= strtotime($manufacture_date)) {
                         $expired_date_error = "Expired date should be later than manufacture date";
@@ -123,9 +123,6 @@
                     $stmt->bindParam(':manufacture_date', $manufacture_date);
                     $stmt->bindParam(':expired_date', $expired_date);
 
-
-
-
                     // specify when this record was inserted to the database
                     $created = date('Y-m-d H:i:s');
                     $stmt->bindParam(':created', $created);
@@ -153,8 +150,6 @@
             }
         }
         ?>
-
-
 
         <!-- html form here where the product information will be entered -->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
@@ -188,7 +183,6 @@
                     <td><input type="date" name="manufacture_date" class="form-control" value="<?php echo isset($manufacture_date) ? htmlspecialchars($manufacture_date) : ''; ?>" />
                         <?php if (isset($manufacture_date_error)) { ?><span class="text-danger"><?php echo $manufacture_date_error; ?></span><?php } ?></td>
                 </tr>
-
 
                 <tr>
                     <td>Expired Date</td>
