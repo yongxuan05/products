@@ -60,6 +60,7 @@
             try { //if insert wrong will go to catch
 
                 // posted values
+                //html是防止JavaScript&入侵
                 $name = htmlspecialchars(strip_tags($_POST['name']));
                 $description = htmlspecialchars(strip_tags($_POST['description']));
                 $price = htmlspecialchars(strip_tags($_POST['price']));
@@ -77,23 +78,31 @@
                 if (empty($price)) {
                     $price_error = "Please enter product price";
                 }
-                if (empty($promotion_price)) {
-                    $promotion_price_error = "Please enter promotion price";
-                }
+
+                //if (empty($promotion_price)) {
+                //    $promotion_price_error = "Please enter promotion price";
+                //}
+
                 if (empty($manufacture_date)) {
                     $manufacture_date_error = "Please enter manufacture date";
                 }
-                if (empty($expired_date)) {
-                    $expired_date_error = "Please enter expired date";
-                }
+
+                //if (empty($expired_date)) {
+                //   $expired_date_error = "Please enter expired date";
+                //}
 
                 // check if expired date is later than manufacture date
-                if (strtotime($expired_date) <= strtotime($manufacture_date)) {
-                    $expired_date_error = "Expired date should be later than manufacture date";
+                if (!empty($expired_date)) {
+                    if (strtotime($expired_date) <= strtotime($manufacture_date)) {
+                        $expired_date_error = "Expired date should be later than manufacture date";
+                    }
                 }
-                // check if promotion price is cheaper than original price
-                if ($promotion_price >= $price) {
-                    $promotion_price_error = "Promotion price must be cheaper than original price";
+
+                // check if user fill up promotion price & must cheaper than original price 
+                if (!empty($promotion_price)) {
+                    if ($promotion_price >= $price) {
+                        $promotion_price_error = "Promotion price must be cheaper than original price";
+                    }
                 }
 
                 // check if there are any errors
