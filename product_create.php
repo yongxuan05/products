@@ -56,7 +56,7 @@
         //$_get (appear in url) and $_post (didnt appear in url) 是传送（隐形）
         if ($_POST) {
             // include database connection
-            //include 'config/database.php';
+            include 'config/database.php';
             try { //if insert wrong will go to catch
 
                 // posted values
