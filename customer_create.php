@@ -32,7 +32,7 @@
                         <a class="nav-link" href="product_create.php">Create Product</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="custormer_create.php">Create Customer</a>
+                        <a class="nav-link" href="customer_create.php">Create Customer</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="contact.html">Contact Us</a>
@@ -69,7 +69,8 @@
                 $dob = htmlspecialchars(strip_tags($_POST['dob']));
                 if (isset($_POST['status'])) $status = ($_POST['status']);
 
-                $number = preg_match('@[0-9]@', $password);
+                $alphabet = preg_match('/[a-zA-Z]/', $Password);
+                $number = preg_match('/[0-9]/', $Password);
 
 
                 // check if any field is empty
@@ -78,12 +79,14 @@
                 } elseif (isset($username) && strlen($username) < 6) {
                     $username_error = "Username must be at least 6 characters";
                 }
-
                 if (empty($Password)) {
                     $Password_error = "Please enter Password";
-                }
-                if (isset($Password) && !$number && strlen($Password) < 8) {
-                    $Password_error = "Password should be at least 8 characters in length and should include number";
+                } elseif (strlen($Password) < 8) {
+                    $Password_error = "Password should be at least 8 characters in length";
+                } elseif (!$alphabet) {
+                    $Password_error = "Password must contain at least one letter";
+                } elseif (!$number) {
+                    $Password_error = "Password must contain at least one number";
                 }
                 if (empty($CPassword)) {
                     $CPassword_error = "Please enter Confirm Password";

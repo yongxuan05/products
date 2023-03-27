@@ -79,17 +79,9 @@
                     $price_error = "Please enter product price";
                 }
 
-                //if (empty($promotion_price)) {
-                //    $promotion_price_error = "Please enter promotion price";
-                //}
-
                 if (empty($manufacture_date)) {
                     $manufacture_date_error = "Please enter manufacture date";
                 }
-
-                //if (empty($expired_date)) {
-                //   $expired_date_error = "Please enter expired date";
-                //}
 
                 // check if expired date  fill up & later than manufacture date
                 if (!empty($expired_date)) {
