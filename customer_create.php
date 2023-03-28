@@ -66,13 +66,14 @@
                 $fname = htmlspecialchars(strip_tags($_POST['fname']));
                 $lname = htmlspecialchars(strip_tags($_POST['lname']));
                 if (isset($_POST['gender'])) $gender = ($_POST['gender']);
+                //isset是要看箱子有没有，没有存在就不会交上去（error)，有的话才把选择放进去$gender里面交上去
                 $dob = htmlspecialchars(strip_tags($_POST['dob']));
                 if (isset($_POST['status'])) $status = ($_POST['status']);
 
                 $alphabet = preg_match('/[a-zA-Z]/', $Password);
-                $alphabet = preg_match('/[a-zA-Z]/', $username);
+                $u_alphabet = preg_match('/[a-zA-Z]/', $username);
                 $number = preg_match('/[0-9]/', $Password);
-                $number = preg_match('/[0-9]/', $username);
+                $u_number = preg_match('/[0-9]/', $username);
 
                 // check if any field is empty
                 if (empty($username)) {
@@ -80,10 +81,10 @@
                 }
                 if (strlen($username) < 6) {
                     $username_error = "Username must be at least 6 characters";
-                } elseif (!$alphabet) {
+                } elseif (!$u_alphabet) {
                     $username_error = "Username with alphabet only";
-                } elseif ($number) {
-                    $username_error = "Username with no number";
+                } elseif ($u_number) {
+                    $username_error = "Username  no number";
                 }
 
                 if (empty($Password)) {
@@ -95,6 +96,7 @@
                 } elseif (!$number) {
                     $Password_error = "Password must contain at least one number";
                 }
+
                 if (empty($CPassword)) {
                     $CPassword_error = "Please enter Confirm Password";
                 } elseif ($CPassword != $Password) {
