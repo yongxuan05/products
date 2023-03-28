@@ -70,13 +70,19 @@
                 if (isset($_POST['status'])) $status = ($_POST['status']);
 
                 $alphabet = preg_match('/[a-zA-Z]/', $Password);
+                $alphabet = preg_match('/[a-zA-Z]/', $username);
                 $number = preg_match('/[0-9]/', $Password);
+                $number = preg_match('/[0-9]/', $username);
 
 
                 // check if any field is empty
                 if (empty($username)) {
                     $username_error = "Please enter Username";
-                } elseif (isset($username) && strlen($username) < 6) {
+                } elseif (!$alphabet) {
+                    $username_error = "Username in alphabet only";
+                } elseif ($number) {
+                    $username_error = "Username in alphabet only";
+                } elseif (strlen($username) < 6) {
                     $username_error = "Username must be at least 6 characters";
                 }
                 if (empty($Password)) {
