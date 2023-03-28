@@ -75,11 +75,14 @@
                 // check if any field is empty
                 if (empty($username)) {
                     $username_error = "Please enter Username";
-                } elseif (!$alphabet) {
+                }
+                if (!$alphabet) {
                     $username_error = "Username in alphabet only";
-                } elseif ($number) {
+                }
+                if ($number) {
                     $username_error = "Username in alphabet only";
-                } elseif (strlen($username) < 6) {
+                }
+                if (strlen($username) < 6) {
                     $username_error = "Username must be at least 6 characters";
                 }
                 if (empty($Password)) {
