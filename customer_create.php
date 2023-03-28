@@ -95,9 +95,7 @@
                     $Password_error = "Password must contain at least one letter";
                 } elseif (!$number) {
                     $Password_error = "Password must contain at least one number";
-                }
-
-                if (empty($CPassword)) {
+                } elseif (empty($CPassword)) {
                     $CPassword_error = "Please enter Confirm Password";
                 } elseif ($CPassword != $Password) {
                     $CPassword_error = "Confirm Password must same with Password";
