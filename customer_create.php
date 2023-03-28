@@ -81,9 +81,9 @@
                 if (strlen($username) < 6) {
                     $username_error = "Username must be at least 6 characters";
                 } elseif (!$alphabet) {
-                    $username_error = "Username in alphabet only";
+                    $username_error = "Username with alphabet only";
                 } elseif ($number) {
-                    $username_error = "Username in no number";
+                    $username_error = "Username with no number";
                 }
 
                 if (empty($Password)) {
