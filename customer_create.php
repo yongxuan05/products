@@ -69,11 +69,8 @@
                 $dob = htmlspecialchars(strip_tags($_POST['dob']));
                 if (isset($_POST['status'])) $status = ($_POST['status']);
 
-                $alphabet = preg_match('/[a-zA-Z]/', $Password);
-                $alphabet = preg_match('/[a-zA-Z]/', $username);
-                $number = preg_match('/[0-9]/', $Password);
-                $number = preg_match('/[0-9]/', $username);
-
+                $alphabet = preg_match('/[a-zA-Z]/', $Password && $username);
+                $number = preg_match('/[0-9]/', $Password && $username);
 
                 // check if any field is empty
                 if (empty($username)) {
