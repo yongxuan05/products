@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Read Products</title>
+    <title>Create Product</title>
     <meta charset="utf-8">
     <!-- Latest compiled and minified Bootstrap CSS (Apply your Bootstrap here -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,6 +14,34 @@
 </head>
 
 <body>
+    <!-- navbar -->
+    <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="navigation bar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">navbar<span>.</span></a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="product_create.php">Create Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="customer_create.php">Create Customer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.h">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- end Navbar -->
 
     <!-- container -->
     <div class="container">
@@ -77,11 +105,10 @@
             <tr>
                 <td></td>
                 <td>
-                    <a href='index.php' class='btn btn-danger'>Back to read products</a>
+                    <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
                 </td>
             </tr>
         </table>
-
 
 
     </div> <!-- end .container -->
