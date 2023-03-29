@@ -28,7 +28,7 @@
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="index.html">Home</a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="product_create.php">Create Product</a>
                     </li>
                     <li class="nav-item">
@@ -135,10 +135,8 @@
                         $manufacture_date = "";
                         $expired_date = "";
                     } else {
-                        echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                        echo "<div class='alert alert-danger'>Unable to save record. Please fill in all required fields.</div>";
                     }
-                } else {
-                    echo "<div class='alert alert-danger'>Unable to save record. Please fill in all required fields.</div>";
                 }
             }
 

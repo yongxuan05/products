@@ -160,10 +160,8 @@
                         $dob = "";
                         $status = "";
                     } else {
-                        echo "<div class='alert alert-danger'>Unable to save record. </div>";
+                        echo "<div class='alert alert-danger'>Unable to save record. Please fill in all required fields.</div>";
                     }
-                } else {
-                    echo "<div class='alert alert-danger'>Unable to save record. Please fill in all required fields.</div>";
                 }
             }
 
