@@ -28,14 +28,17 @@
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="index.html">Home</a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="product_create.php">Create Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="product_read.php">Read Products</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="customer_create.php">Create Customer</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.h">Contact Us</a>
+                        <a class="nav-link" href="contact.html">Contact Us</a>
                     </li>
                 </ul>
             </div>
@@ -61,7 +64,7 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT id, name, description, price FROM products WHERE id = ? LIMIT 0,1";
+            $query = "SELECT id, name, description, price, promotion_price, manufacture_date, expired_date FROM products WHERE id = ? LIMIT 0,1";
             $stmt = $con->prepare($query);
 
             // this is the first question mark
@@ -77,6 +80,9 @@
             $name = $row['name'];
             $description = $row['description'];
             $price = $row['price'];
+            $promotion_price = $row['promotion_price'];
+            $manufacture_date = $row['manufacture_date'];
+            $expired_date = $row['expired_date'];
         }
 
         // show error
@@ -94,14 +100,32 @@
                 <td>Name</td>
                 <td><?php echo htmlspecialchars($name, ENT_QUOTES);  ?></td>
             </tr>
+
             <tr>
                 <td>Description</td>
                 <td><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></td>
             </tr>
+
             <tr>
                 <td>Price</td>
-                <td><?php echo htmlspecialchars($price, ENT_QUOTES);  ?></td>
+                <td><?php echo number_format($price, 2);  ?></td>
             </tr>
+
+            <tr>
+                <td>Promotional Price</td>
+                <td><?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?></td>
+            </tr>
+
+            <tr>
+                <td>Manufacture Date</td>
+                <td><?php echo htmlspecialchars($manufacture_date, ENT_QUOTES);  ?></td>
+            </tr>
+
+            <tr>
+                <td>Expiry Date</td>
+                <td><?php echo htmlspecialchars($expired_date, ENT_QUOTES);  ?></td>
+            </tr>
+
             <tr>
                 <td></td>
                 <td>

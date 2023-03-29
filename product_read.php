@@ -28,14 +28,17 @@
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="index.html">Home</a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="product_create.php">Create Product</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="product_read.php">Read Products</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="customer_create.php">Create Customer</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.h">Contact Us</a>
+                        <a class="nav-link" href="contact.html">Contact Us</a>
                     </li>
                 </ul>
             </div>
@@ -80,6 +83,9 @@
             echo "<th>Name</th>";
             echo "<th>Description</th>";
             echo "<th>Price</th>";
+            echo "<th>Promotion Price</th>";
+            echo "<th>Manufacture Date</th>";
+            echo "<th>Expiry Date</th>";
             echo "<th>Action</th>";
             echo "</tr>";
 
@@ -94,7 +100,10 @@
                 echo "<td>{$id}</td>";
                 echo "<td>{$name}</td>";
                 echo "<td>{$description}</td>";
-                echo "<td>{$price}</td>";
+                echo "<td>" . number_format($price, 2) . "</td>";
+                echo "<td>{$promotion_price}</td>";
+                echo "<td>{$manufacture_date}</td>";
+                echo "<td>{$expired_date}</td>";
                 echo "<td>";
 
                 // read one record

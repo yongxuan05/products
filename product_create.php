@@ -32,17 +32,19 @@
                         <a class="nav-link" href="product_create.php">Create Product</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="product_read.php">Read Products</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="customer_create.php">Create Customer</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.h">Contact Us</a>
+                        <a class="nav-link" href="contact.html">Contact Us</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
     <!-- end Navbar -->
-
     <!-- container -->
     <div class="container">
         <div class="cp-page-header">

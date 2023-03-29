@@ -31,6 +31,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="product_create.php">Create Product</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="product_read.php">Read Products</a>
+                    </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="customer_create.php">Create Customer</a>
                     </li>
