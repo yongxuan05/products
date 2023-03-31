@@ -14,13 +14,18 @@
 </head>
 
 <body>
+
     <!-- container -->
     <div class="container">
         <div class="cp-page-header">
             <h1>Login</h1>
         </div>
 
+        <!-- html form to create product will be here -->
+        <!-- PHP insert code will be here -->
+
         <?php
+        //$_get (appear in url) and $_post (didnt appear in url) 是传送（隐形）
         if ($_POST) {
             // include database connection
             include 'config/database.php';
@@ -34,14 +39,13 @@
                 if (empty($username)) {
                     $username_error = "Please enter Username";
                 }
+
                 if (empty($Password)) {
                     $Password_error = "Please enter Password";
-                } elseif ($username != "" && $Password != "") {
-                    $login_error = "Your account and/or password is incorrect, please try again";
                 }
 
                 // check if there are any errors
-                if (!isset($username_error) && !isset($Password_error) && !isset($login_error)) {
+                if (!isset($username_error) && !isset($Password_error)) {
 
 
                     // insert query
@@ -54,14 +58,13 @@
                     $stmt->bindParam(':username', $username);
                     $stmt->bindParam(':Password', $Password);
 
-
-                    // Execute the query
-                    if ($stmt->execute()) {
-                        echo "<div class='alert alert-success'>Login Successfull.</div>";
-                        $username = "";
-                        $Password = "";
+                    // TODO: Check if the username and password are valid
+                    if ($username === 'username' && $Password === 'password') {
+                        // Redirect to index.php on successful login
+                        header("Location: index.html");
+                        exit();
                     } else {
-                        echo "<div class='alert alert-danger'>Your username and/or password is incorrect, please try again.</div>";
+                        echo "<div class='alert alert-danger'>Invalid username or password.</div>";
                     }
                 }
             }
@@ -93,7 +96,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input type='submit' value='Login' class='btn btn-primary' />
+                        <input type='submit' name="login" value='Login' class='btn btn-primary' />
                     </td>
                 </tr>
             </table>
