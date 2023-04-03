@@ -22,6 +22,7 @@
         <!-- PHP insert code will be here -->
 
         <?php
+        session_start();
         //$_get (appear in url) and $_post (didnt appear in url) 是传送（隐形）
         if ($_POST) {
             // include database connection
@@ -40,39 +41,38 @@
                 if (empty($Password)) {
                     $Password_error = "Please enter Password";
                 }
-
                 // check if there are any errors
-                if (!isset($username_error) && !isset($Password_error)) {
-
-
-                    // insert query
-                    $query = "INSERT INTO customers SET username=:username, Password=:Password"; // info insert to blindParam
-
-                    // prepare query for execution
+                if (!isset($username_error) && !isset($password_error)) {
+                    $query = "SELECT * FROM customers WHERE username=:username AND Password=:Password";
                     $stmt = $con->prepare($query);
-
-                    // bind the parameters
                     $stmt->bindParam(':username', $username);
                     $stmt->bindParam(':Password', $Password);
+                    $stmt->execute();
 
-                    // TODO: Check if the username and password are valid
-                    if ($username === 'username' && $Password === 'password') {
-                        // Redirect to index.php on successful login
-                        header("Location: index.html");
-                        exit();
+                    // check if any rows were returned
+                    $result = $stmt->rowCount();
+                    if ($result == 1) {
+                        // fetch the data into an associative array
+                        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                        if ($user['status'] === 'active') {
+                            // set the session variable
+                            $_SESSION['username'] = $username;
+
+                            // redirect to dashboard
+                            header("Location: index.html");
+                            exit();
+                        } else {
+                            echo "<div class='alert alert-danger'>Your account is in inactive</div>";
+                        }
                     } else {
-                        echo "<div class='alert alert-danger'>Invalid username or password.</div>";
+                        echo "<div class='alert alert-danger'>Invalid Username or Password.</div>";
                     }
                 }
-            }
-
-            // show error
-            catch (PDOException $exception) {
+            } catch (PDOException $exception) {
                 die('ERROR: ' . $exception->getMessage());
             }
         }
         ?>
-
 
 
         <!-- html form here where the customer information will be entered -->
