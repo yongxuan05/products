@@ -59,7 +59,7 @@
                             $_SESSION['username'] = $username;
 
                             // redirect to dashboard
-                            header("Location: index.html");
+                            header("Location: index.php");
                             exit();
                         } else {
                             echo "<div class='alert alert-danger'>Your account is in inactive</div>";
