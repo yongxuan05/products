@@ -31,7 +31,7 @@
 
                 // posted values
                 $username = htmlspecialchars(strip_tags($_POST['username']));
-                $Password = htmlspecialchars(strip_tags($_POST['password']));
+                $Password = $_POST['Password'];
 
                 // check if any field is empty
                 if (empty($username)) {
@@ -42,27 +42,35 @@
                     $Password_error = "Please enter Password";
                 }
                 // check if there are any errors
-                if (!isset($username_error) && !isset($password_error)) {
-                    $query = "SELECT * FROM customers WHERE username=:username AND Password=:Password";
+                if (!isset($username_error) && !isset($Password_error)) {
+                    $query = "SELECT * FROM customers WHERE username=:username";
                     $stmt = $con->prepare($query);
                     $stmt->bindParam(':username', $username);
-                    $stmt->bindParam(':Password', $Password);
                     $stmt->execute();
 
                     // check if any rows were returned
                     $result = $stmt->rowCount();
-                    if ($result == 1) {
-                        // fetch the data into an associative array
-                        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-                        if ($user['status'] === 'active') {
-                            // set the session variable
-                            $_SESSION['username'] = $username;
 
-                            // redirect to dashboard
-                            header("Location: index.php");
-                            exit();
+                    if ($user = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+                        if ($user['Password'] == md5($Password)) {
+
+                            if ($result == 1) {
+                                if ($user['status'] === 'active') {
+                                    // set the session variable
+                                    $_SESSION['username'] = $username;
+
+                                    // redirect to dashboard
+                                    header("Location: index.php");
+                                    exit();
+                                } else {
+                                    echo "<div class='alert alert-danger'>Your account is inactive</div>";
+                                }
+                            } else {
+                                echo "<div class='alert alert-danger'>Invalid Username or Password.</div>";
+                            }
                         } else {
-                            echo "<div class='alert alert-danger'>Your account is in inactive</div>";
+                            echo "<div class='alert alert-danger'>Password is incorrect.</div>";
                         }
                     } else {
                         echo "<div class='alert alert-danger'>Invalid Username or Password.</div>";
