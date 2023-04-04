@@ -70,8 +70,8 @@
 
                 // posted values
                 $username = htmlspecialchars(strip_tags($_POST['username']));
-                $Password = htmlspecialchars(strip_tags($_POST['Password']));
-                $CPassword = htmlspecialchars(strip_tags($_POST['CPassword']));
+                $Password = $_POST['Password'];
+                $CPassword = $_POST['CPassword'];
                 $fname = htmlspecialchars(strip_tags($_POST['fname']));
                 $lname = htmlspecialchars(strip_tags($_POST['lname']));
                 if (isset($_POST['gender'])) $gender = ($_POST['gender']);
@@ -108,7 +108,10 @@
                     $CPassword_error = "Please enter Confirm Password";
                 } elseif ($CPassword != $Password) {
                     $CPassword_error = "Confirm Password must same with Password";
+                } else {
+                    $Password = md5($Password);
                 }
+
                 if (empty($fname)) {
                     $fname_error = "Please enter First Name";
                 }
