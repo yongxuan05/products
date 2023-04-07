@@ -29,6 +29,8 @@ body {
     outline: none;
 }
 
+
+
 @media (min-width: 992px) {
     .custom-navbar .custom-navbar-nav li {
         margin-left: 15px;
@@ -38,13 +40,14 @@ body {
 
 .custom-navbar .custom-navbar-nav li a {
     font-weight: 500;
-    color: #ffffff !important;
+    color: #ffffff;
     opacity: 0.5;
     -webkit-transition: 0.3s all ease;
     -o-transition: 0.3s all ease;
     transition: 0.3s all ease;
     position: relative;
 }
+
 
 @media (min-width: 768px) {
     .custom-navbar .custom-navbar-nav li a:before {

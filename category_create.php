@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Add Product</title>
+    <title>Create Category</title>
     <meta charset="utf-8">
     <!-- Latest compiled and minified Bootstrap CSS (Apply your Bootstrap here -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +19,7 @@
     <!-- container -->
     <div class="container">
         <div class="cp-page-header">
-            <h1>Create Customer</h1>
+            <h1>Add Category</h1>
         </div>
 
         <!-- html form to create product will be here -->
@@ -148,67 +148,22 @@
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
-                    <td>Username</td>
-                    <td><input type="text" name='username' class="form-control" value="<?php echo isset($username) ? htmlspecialchars($username) : ''; ?>" />
-                        <?php if (isset($username_error)) { ?><span class="text-danger"><?php echo $username_error; ?></span><?php } ?></td>
+                    <td>Category Name</td>
+                    <td><input type="text" name='catname' class="form-control" value="<?php echo isset($catname) ? htmlspecialchars($catname) : ''; ?>" />
+                        <?php if (isset($catname_error)) { ?><span class="text-danger"><?php echo $catname_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td>First Name</td>
-                    <td><input type="text" name="fname" class="form-control" value="<?php echo isset($fname) ? htmlspecialchars($fname) : ''; ?>" />
-                        <?php if (isset($fname_error)) { ?><span class="text-danger"><?php echo $fname_error; ?></span><?php } ?></td>
+                    <td>Description</td>
+                    <td><input type="text" name="desc" class="form-control" value="<?php echo isset($desc) ? htmlspecialchars($desc) : ''; ?>" />
+                        <?php if (isset($desc_error)) { ?><span class="text-danger"><?php echo $desc_error; ?></span><?php } ?></td>
                 </tr>
-
-                <tr>
-                    <td>Last Name</td>
-                    <td><input type="text" name="lname" class="form-control" value="<?php echo isset($lname) ? htmlspecialchars($lname) : ''; ?>" />
-                        <?php if (isset($lname_error)) { ?><span class="text-danger"><?php echo $lname_error; ?></span><?php } ?></td>
-                </tr>
-
-                <tr>
-                    <td>Password</td>
-                    <td><input type="password" name='Password' class="form-control" value="<?php echo isset($Password) ? htmlspecialchars($Password) : ''; ?>" />
-                        <?php if (isset($Password_error)) { ?><span class="text-danger"><?php echo $Password_error; ?></span><?php } ?></td>
-                </tr>
-
-                <tr>
-                    <td>Confirm Password</td>
-                    <td><input type="password" name='CPassword' class="form-control" value="<?php echo isset($CPassword) ? htmlspecialchars($Password) : ''; ?>" />
-                        <?php if (isset($CPassword_error)) { ?><span class="text-danger"><?php echo $CPassword_error; ?></span><?php } ?></td>
-                </tr>
-
-                <tr>
-                    <td>Gender</td>
-                    <td>
-                        <input type="radio" name="gender" <?php if (isset($gender) && $gender == "female") echo "checked"; ?> value="female">Female
-                        <input type="radio" name="gender" <?php if (isset($gender) && $gender == "male") echo "checked"; ?> value="male">Male
-
-                        <?php if (isset($gender_error)) { ?><span class="text-danger"><?php echo "<br> $gender_error"; ?></span><?php } ?>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Date of Birth</td>
-                    <td><input type="date" name="dob" class="form-control" value="<?php echo isset($dob) ? htmlspecialchars($dob) : ''; ?>" />
-                        <?php if (isset($dob_error)) { ?><span class="text-danger"><?php echo $dob_error; ?></span><?php } ?></td>
-                </tr>
-
-                <tr>
-                    <td>Status</td>
-                    <td>
-                        <input type="radio" name="status" <?php if (isset($status) && $status == "active") echo "checked"; ?> value="active">Active
-                        <input type="radio" name="status" <?php if (isset($status) && $status == "inactive") echo "checked"; ?> value="inactive">Inactive
-
-                        <?php if (isset($status_error)) { ?><span class="text-danger"><?php echo "<br> $status_error"; ?></span><?php } ?>
-                    </td>
-                </tr>
-
 
                 <tr>
                     <td></td>
                     <td>
-                        <input type='submit' value='Save' class='btn btn-primary' />
-                        <a href='index.php' class='btn btn-danger'>Back to read products</a>
+                        <input type='submit' value='Create' class='btn btn-primary' />
+                        <a href='index.php' class='btn btn-danger'>Back to category</a>
                     </td>
                 </tr>
             </table>
