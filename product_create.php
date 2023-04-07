@@ -36,6 +36,7 @@
                 // posted values
                 //html是防止JavaScript&入侵
                 $name = htmlspecialchars(strip_tags($_POST['name']));
+                $catname = htmlspecialchars(strip_tags($_POST['catname']));
                 $description = htmlspecialchars(strip_tags($_POST['description']));
                 $price = htmlspecialchars(strip_tags($_POST['price']));
                 $promotion_price = htmlspecialchars(strip_tags($_POST['promotion_price']));
@@ -45,6 +46,9 @@
                 // check if any field is empty
                 if (empty($name)) {
                     $name_error = "Please enter product name";
+                }
+                if (empty($catname)) {
+                    $catname_error = "Please select category";
                 }
                 if (empty($description)) {
                     $description_error = "Please enter product description";
@@ -72,17 +76,18 @@
                 }
 
                 // check if there are any errors
-                if (!isset($name_error) && !isset($description_error) && !isset($price_error) && !isset($promotion_price_error) && !isset($manufacture_date_error) && !isset($expired_date_error)) {
+                if (!isset($name_error) && !isset($catname_error) && !isset($description_error) && !isset($price_error) && !isset($promotion_price_error) && !isset($manufacture_date_error) && !isset($expired_date_error)) {
 
 
                     // insert query
-                    $query = "INSERT INTO products SET name=:name, description=:description, price=:price, promotion_price=:promotion_price, manufacture_date=:manufacture_date, expired_date=:expired_date, created=:created"; // info insert to blindParam
+                    $query = "INSERT INTO products SET name=:name, catname=:catname, description=:description, price=:price, promotion_price=:promotion_price, manufacture_date=:manufacture_date, expired_date=:expired_date, created=:created"; // info insert to blindParam
 
                     // prepare query for execution
                     $stmt = $con->prepare($query);
 
                     // bind the parameters
                     $stmt->bindParam(':name', $name);
+                    $stmt->bindParam(':catname', $catname);
                     $stmt->bindParam(':description', $description);
                     $stmt->bindParam(':price', $price);
                     $stmt->bindParam(':promotion_price', $promotion_price);
@@ -97,6 +102,7 @@
                     if ($stmt->execute()) {
                         echo "<div class='alert alert-success'>Record was saved.</div>";
                         $name = "";
+                        $catname = "";
                         $description = "";
                         $price = "";
                         $promotion_price = "";
@@ -123,6 +129,22 @@
                     <td><input type='text' name='name' class="form-control" value="<?php echo isset($name) ? htmlspecialchars($name) : ''; ?>" />
                         <?php if (isset($name_error)) { ?><span class="text-danger"><?php echo $name_error; ?></span><?php } ?></td>
                 </tr>
+
+                <td>Category</td>
+                <td>
+                    <select name="catname" class="form-control" value="">
+                        <option value="" <?php if (!isset($catname)) echo "selected"; ?>>Please select a category</option>
+                        <option value="sports" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Sports</option>
+                        <option value="drinks" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Drinks</option>
+                        <option value="health&beauty" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Health & Beauty</option>
+                        <option value="container" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Container</option>
+                        <option value="gadgets" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Gadgets</option>
+                        <option value="home" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Home</option>
+
+                    </select>
+
+                    <?php if (isset($catname_error)) { ?><span class="text-danger"><?php echo "<br> $catname_error"; ?></span><?php } ?>
+                </td>
 
                 <tr>
                     <td>Description</td>

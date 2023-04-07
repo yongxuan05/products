@@ -38,7 +38,7 @@
 
                 // check if any field is empty
                 if (empty($catname)) {
-                    $catname_error = "Please enter category";
+                    $catname_error = "Please enter category name";
                 }
                 if (empty($description)) {
                     $description_error = "Please enter categpry description";
@@ -86,22 +86,12 @@
         <!-- html form here where the customer information will be entered -->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <table class='table table-hover table-responsive table-bordered'>
-                <td>Category</td>
-                <td>
-                    <select name="catname" class="form-control" value="">
-                        <option value="" <?php if (!isset($catname)) echo "selected"; ?>>Please select a category</option>
-                        <option value="sports" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Sports</option>
-                        <option value="drinks" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Drinks</option>
-                        <option value="health&beauty" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Health & Beauty</option>
-                        <option value="container" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Container</option>
-                        <option value="gadgets" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Gadgets</option>
-                        <option value="home" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Home</option>
-
-                    </select>
-
-                    <?php if (isset($status_error)) { ?><span class="text-danger"><?php echo "<br> $status_error"; ?></span><?php } ?>
-                </td>
+                <tr>
+                    <td>Category Name</td>
+                    <td><input type='text' name='catname' class="form-control" value="<?php echo isset($catname) ? htmlspecialchars($catname) : ''; ?>" />
+                        <?php if (isset($catname_error)) { ?><span class="text-danger"><?php echo $catname_error; ?></span><?php } ?></td>
                 </tr>
+
 
                 <tr>
                     <td>Description</td>
