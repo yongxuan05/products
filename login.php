@@ -31,7 +31,7 @@
 
                 // posted values
                 $username = htmlspecialchars(strip_tags($_POST['username']));
-                $Password = $_POST['Password'];
+                $Password = ($_POST['password']);
 
                 // check if any field is empty
                 if (empty($username)) {
@@ -42,7 +42,7 @@
                     $Password_error = "Please enter Password";
                 }
                 // check if there are any errors
-                if (!isset($username_error) && !isset($Password_error)) {
+                if (!isset($username_error) && !isset($password_error)) {
                     $query = "SELECT * FROM customers WHERE username=:username";
                     $stmt = $con->prepare($query);
                     $stmt->bindParam(':username', $username);
@@ -50,30 +50,26 @@
 
                     // check if any rows were returned
                     $result = $stmt->rowCount();
-
-                    if ($user = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    if ($result == 1) {
+                        // fetch the data into an associative array
+                        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
                         if ($user['Password'] == md5($Password)) {
+                            if ($user['status'] === 'active') {
+                                // set the session variable
+                                $_SESSION['username'] = $username;
 
-                            if ($result == 1) {
-                                if ($user['status'] === 'active') {
-                                    // set the session variable
-                                    $_SESSION['username'] = $username;
-
-                                    // redirect to dashboard
-                                    header("Location: index.php");
-                                    exit();
-                                } else {
-                                    echo "<div class='alert alert-danger'>Your account is inactive</div>";
-                                }
+                                // redirect to dashboard
+                                header("Location: index.php");
+                                exit();
                             } else {
-                                echo "<div class='alert alert-danger'>Invalid Username or Password.</div>";
+                                echo "<div class='alert alert-danger'>Your account is in inactive</div>";
                             }
                         } else {
                             echo "<div class='alert alert-danger'>Password is incorrect.</div>";
                         }
                     } else {
-                        echo "<div class='alert alert-danger'>Invalid Username or Password.</div>";
+                        echo "<div class='alert alert-danger'>Invalid Username & Password.</div>";
                     }
                 }
             } catch (PDOException $exception) {
