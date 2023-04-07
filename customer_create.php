@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Add Product</title>
+    <title>Add Customer</title>
     <meta charset="utf-8">
     <!-- Latest compiled and minified Bootstrap CSS (Apply your Bootstrap here -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +19,7 @@
     <!-- container -->
     <div class="container">
         <div class="cp-page-header">
-            <h1>Create Customer</h1>
+            <h1>Add Customer</h1>
         </div>
 
         <!-- html form to create product will be here -->

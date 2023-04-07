@@ -20,7 +20,7 @@
     <!-- container -->
     <div class="container">
         <div class="page-header">
-            <h1>Read Customers</h1>
+            <h1>Customers</h1>
         </div>
 
         <!-- PHP code to read records will be here -->

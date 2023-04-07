@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Create Category</title>
+    <title>Add Category</title>
     <meta charset="utf-8">
     <!-- Latest compiled and minified Bootstrap CSS (Apply your Bootstrap here -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,102 +33,41 @@
             try { //if insert wrong will go to catch
 
                 // posted values
-                $username = htmlspecialchars(strip_tags($_POST['username']));
-                $Password = $_POST['Password'];
-                $CPassword = $_POST['CPassword'];
-                $fname = htmlspecialchars(strip_tags($_POST['fname']));
-                $lname = htmlspecialchars(strip_tags($_POST['lname']));
-                if (isset($_POST['gender'])) $gender = ($_POST['gender']);
-                //isset是要看箱子有没有，没有存在就不会交上去（error)，有的话才把选择放进去$gender里面交上去
-                $dob = htmlspecialchars(strip_tags($_POST['dob']));
-                if (isset($_POST['status'])) $status = ($_POST['status']);
-
-                $alphabet = preg_match('/[a-zA-Z]/', $Password);
-                $u_alphabet = preg_match('/[a-zA-Z]/', $username);
-                $number = preg_match('/[0-9]/', $Password);
-                $u_number = preg_match('/[0-9]/', $username);
+                $catname = htmlspecialchars(strip_tags($_POST['catname']));
+                $description = htmlspecialchars(strip_tags($_POST['description']));
 
                 // check if any field is empty
-                if (empty($username)) {
-                    $username_error = "Please enter Username";
+                if (empty($catname)) {
+                    $catname_error = "Please enter category";
                 }
-                if (strlen($username) < 6) {
-                    $username_error = "Username must be at least 6 characters";
-                } elseif (!$u_alphabet) {
-                    $username_error = "Username with alphabet only";
-                } elseif ($u_number) {
-                    $username_error = "Username  no number";
+                if (empty($description)) {
+                    $description_error = "Please enter categpry description";
                 }
-
-                if (empty($Password)) {
-                    $Password_error = "Please enter Password";
-                } elseif (strlen($Password) < 8) {
-                    $Password_error = "Password should be at least 8 characters in length";
-                } elseif (!$alphabet) {
-                    $Password_error = "Password must contain at least one letter";
-                } elseif (!$number) {
-                    $Password_error = "Password must contain at least one number";
-                } elseif (empty($CPassword)) {
-                    $CPassword_error = "Please enter Confirm Password";
-                } elseif ($CPassword != $Password) {
-                    $CPassword_error = "Confirm Password must same with Password";
-                } else {
-                    $Password = md5($Password);
-                }
-
-                if (empty($fname)) {
-                    $fname_error = "Please enter First Name";
-                }
-                if (empty($lname)) {
-                    $lname_error = "Please enter Last Name";
-                }
-                if (empty($gender)) {
-                    $gender_error = "Please select gender";
-                }
-                if (empty($dob)) {
-                    $dob_error = "Please enter Date of Birth";
-                }
-
-                if (empty($status)) {
-                    $status_error = "Please select your Status";
-                }
-
 
                 // check if there are any errors
-                if (!isset($username_error) && !isset($Password_error) && !isset($CPassword_error) && !isset($fname_error) && !isset($lname_error) && !isset($gender_error) && !isset($dob_error) && !isset($status_error)) {
+                if (!isset($catname_error) && !isset($description_error)) {
 
 
                     // insert query
-                    $query = "INSERT INTO customers SET username=:username, Password=:Password, fname=:fname, lname=:lname, gender=:gender, dob=:dob, register=:register, status=:status "; // info insert to blindParam
+                    $query = "INSERT INTO category SET catname=:catname, description=:description, created=:created "; // info insert to blindParam
 
                     // prepare query for execution
                     $stmt = $con->prepare($query);
 
                     // bind the parameters
-                    $stmt->bindParam(':username', $username);
-                    $stmt->bindParam(':Password', $Password);
-                    $stmt->bindParam(':fname', $fname);
-                    $stmt->bindParam(':lname', $lname);
-                    $stmt->bindParam(':gender', $gender);
-                    $stmt->bindParam(':dob', $dob);
-                    $stmt->bindParam(':status', $status);
+                    $stmt->bindParam(':catname', $catname);
+                    $stmt->bindParam(':description', $description);
 
 
                     // specify when this record was inserted to the database
                     $created = date('Y-m-d H:i:s');
-                    $stmt->bindParam(':register', $created);
+                    $stmt->bindParam(':created', $created);
 
                     // Execute the query
                     if ($stmt->execute()) {
                         echo "<div class='alert alert-success'>Record was saved.</div>";
-                        $username = "";
-                        $Password = "";
-                        $CPassword = "";
-                        $fname = "";
-                        $lname = "";
-                        $gender = "";
-                        $dob = "";
-                        $status = "";
+                        $catname = "";
+                        $description = "";
                     } else {
                         echo "<div class='alert alert-danger'>Unable to save record. Please fill in all required fields.</div>";
                     }
@@ -147,16 +86,27 @@
         <!-- html form here where the customer information will be entered -->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <table class='table table-hover table-responsive table-bordered'>
-                <tr>
-                    <td>Category Name</td>
-                    <td><input type="text" name='catname' class="form-control" value="<?php echo isset($catname) ? htmlspecialchars($catname) : ''; ?>" />
-                        <?php if (isset($catname_error)) { ?><span class="text-danger"><?php echo $catname_error; ?></span><?php } ?></td>
+                <td>Category</td>
+                <td>
+                    <select name="catname" class="form-control" value="">
+                        <option value="" <?php if (!isset($catname)) echo "selected"; ?>>Please select a category</option>
+                        <option value="sports" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Sports</option>
+                        <option value="drinks" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Drinks</option>
+                        <option value="health&beauty" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Health & Beauty</option>
+                        <option value="container" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Container</option>
+                        <option value="gadgets" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Gadgets</option>
+                        <option value="home" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Home</option>
+
+                    </select>
+
+                    <?php if (isset($status_error)) { ?><span class="text-danger"><?php echo "<br> $status_error"; ?></span><?php } ?>
+                </td>
                 </tr>
 
                 <tr>
                     <td>Description</td>
-                    <td><input type="text" name="desc" class="form-control" value="<?php echo isset($desc) ? htmlspecialchars($desc) : ''; ?>" />
-                        <?php if (isset($desc_error)) { ?><span class="text-danger"><?php echo $desc_error; ?></span><?php } ?></td>
+                    <td><textarea name='description' class="form-control" value="<?php echo isset($description) ? htmlspecialchars($description) : ''; ?>"></textarea>
+                        <?php if (isset($description_error)) { ?><span class="text-danger"><?php echo  $description_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>

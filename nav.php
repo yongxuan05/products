@@ -66,7 +66,7 @@
                         <li class="nav-item <?php if ($currentPage == 'customer_read') {
                                                 echo 'active';
                                             } ?>">
-                            <a class="dropdown-item bg-dark" href="customer_read.php">Category</a>
+                            <a class="dropdown-item bg-dark" href="category_create.php">Category</a>
                         </li>
                         <li class="nav-item <?php if ($currentPage == 'customer_create') {
                                                 echo 'active';

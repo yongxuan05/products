@@ -19,7 +19,7 @@
     <!-- container -->
     <div class="container">
         <div class="page-header">
-            <h1>Read Products</h1>
+            <h1>Products</h1>
         </div>
 
         <!-- PHP code to read records will be here -->

@@ -20,7 +20,7 @@
     <!-- container -->
     <div class="container">
         <div class="cp-page-header">
-            <h1>Create Product</h1>
+            <h1>Add Product</h1>
         </div>
 
         <!-- html form to create product will be here -->
