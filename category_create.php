@@ -34,30 +34,27 @@
 
                 // posted values
                 $catname = htmlspecialchars(strip_tags($_POST['catname']));
-                $description = htmlspecialchars(strip_tags($_POST['description']));
+                $descr = htmlspecialchars(strip_tags($_POST['descr']));
 
                 // check if any field is empty
                 if (empty($catname)) {
                     $catname_error = "Please enter category name";
                 }
-                if (empty($description)) {
-                    $description_error = "Please enter categpry description";
+                if (empty($descr)) {
+                    $descr_error = "Please enter category description";
                 }
 
                 // check if there are any errors
-                if (!isset($catname_error) && !isset($description_error)) {
+                if (!isset($catname_error) && !isset($descr_error)) {
+                    // specify when this record was inserted to the database     
 
-
-                    // insert query
-                    $query = "INSERT INTO category SET catname=:catname, description=:description, created=:created "; // info insert to blindParam
-
-                    // prepare query for execution
+                    // get all categories from database
+                    $query = "INSERT INTO category SET catname=:catname, descr=:descr, created=:created"; // info insert to blindParam
                     $stmt = $con->prepare($query);
 
                     // bind the parameters
                     $stmt->bindParam(':catname', $catname);
-                    $stmt->bindParam(':description', $description);
-
+                    $stmt->bindParam(':descr', $descr);
 
                     // specify when this record was inserted to the database
                     $created = date('Y-m-d H:i:s');
@@ -67,7 +64,7 @@
                     if ($stmt->execute()) {
                         echo "<div class='alert alert-success'>Record was saved.</div>";
                         $catname = "";
-                        $description = "";
+                        $descr = "";
                     } else {
                         echo "<div class='alert alert-danger'>Unable to save record. Please fill in all required fields.</div>";
                     }
@@ -81,8 +78,6 @@
         }
         ?>
 
-
-
         <!-- html form here where the customer information will be entered -->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <table class='table table-hover table-responsive table-bordered'>
@@ -91,20 +86,16 @@
                     <td><input type='text' name='catname' class="form-control" value="<?php echo isset($catname) ? htmlspecialchars($catname) : ''; ?>" />
                         <?php if (isset($catname_error)) { ?><span class="text-danger"><?php echo $catname_error; ?></span><?php } ?></td>
                 </tr>
-
-
                 <tr>
                     <td>Description</td>
-                    <td><textarea name='description' class="form-control" value="<?php echo isset($description) ? htmlspecialchars($description) : ''; ?>"></textarea>
-                        <?php if (isset($description_error)) { ?><span class="text-danger"><?php echo  $description_error; ?></span><?php } ?></td>
+                    <td><textarea name='descr' class="form-control"><?php echo isset($descr) ? htmlspecialchars($descr) : ''; ?></textarea>
+                        <?php if (isset($descr_error)) { ?><span class="text-danger"><?php echo  $descr_error; ?></span><?php } ?></td>
                 </tr>
-
-                <tr>
-                    <td></td>
-                    <td>
-                        <input type='submit' value='Create' class='btn btn-primary' />
-                        <a href='index.php' class='btn btn-danger'>Back to category</a>
-                    </td>
+                <td></td>
+                <td>
+                    <input type='submit' value='Create' class='btn btn-primary' />
+                    <a href='index.php' class='btn btn-danger'>Back to category</a>
+                </td>
                 </tr>
             </table>
         </form>

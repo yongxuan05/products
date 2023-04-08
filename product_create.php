@@ -43,6 +43,12 @@
                 $manufacture_date = htmlspecialchars(strip_tags($_POST['manufacture_date']));
                 $expired_date = htmlspecialchars(strip_tags($_POST['expired_date']));
 
+                // fetch categories from the database
+                $query = "SELECT id, catname FROM category";
+                $stmt = $con->prepare($query);
+                $stmt->execute();
+                $category = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
                 // check if any field is empty
                 if (empty($name)) {
                     $name_error = "Please enter product name";
@@ -75,6 +81,12 @@
                     }
                 }
 
+                if (!empty($catname)) {
+                    $stmt->bindParam(':catname', $catname);
+                } else {
+                    $stmt->bindValue(':catname', $category[0]['id']);
+                }
+
                 // check if there are any errors
                 if (!isset($name_error) && !isset($catname_error) && !isset($description_error) && !isset($price_error) && !isset($promotion_price_error) && !isset($manufacture_date_error) && !isset($expired_date_error)) {
 
@@ -87,12 +99,12 @@
 
                     // bind the parameters
                     $stmt->bindParam(':name', $name);
-                    $stmt->bindParam(':catname', $catname);
                     $stmt->bindParam(':description', $description);
                     $stmt->bindParam(':price', $price);
                     $stmt->bindParam(':promotion_price', $promotion_price);
                     $stmt->bindParam(':manufacture_date', $manufacture_date);
                     $stmt->bindParam(':expired_date', $expired_date);
+
 
                     // specify when this record was inserted to the database
                     $created = date('Y-m-d H:i:s');
@@ -130,22 +142,30 @@
                         <?php if (isset($name_error)) { ?><span class="text-danger"><?php echo $name_error; ?></span><?php } ?></td>
                 </tr>
 
-                <td>Category</td>
-                <td>
-                    <select name="catname" class="form-control" value="">
-                        <option value="" <?php if (!isset($catname)) echo "selected"; ?>>Please select a category</option>
-                        <option value="sports" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Sports</option>
-                        <option value="drinks" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Drinks</option>
-                        <option value="health&beauty" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Health & Beauty</option>
-                        <option value="container" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Container</option>
-                        <option value="gadgets" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Gadgets</option>
-                        <option value="home" <?php if (isset($catname) && $catname == "sports") echo "selected"; ?>>Home</option>
-
-                    </select>
-
-                    <?php if (isset($catname_error)) { ?><span class="text-danger"><?php echo "<br> $catname_error"; ?></span><?php } ?>
-                </td>
-
+                <tr>
+                    <td>Category</td>
+                    <td>
+                        <select name="catname" class="form-control">
+                            <option value="">-- Select Category --</option>
+                            <?php
+                            // include database connection
+                            include 'config/database.php';
+                            // fetch categories from the database
+                            $query = "SELECT id, catname FROM category ORDER BY catname";
+                            $stmt = $con->prepare($query);
+                            $stmt->execute();
+                            $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            // dynamically populate the dropdown list with categories
+                            foreach ($categories as $category) {
+                                $selected = isset($catname) && $catname == $category['id'] ? 'selected' : '';
+                                echo "<option value='{$category['id']}' {$selected}>{$category['catname']}</option>";
+                            }
+                            ?>
+                        </select>
+                        <?php if (isset($catname_error)) : ?>
+                            <span class="text-danger"><?php echo $catname_error; ?></span>
+                        <?php endif; ?>
+                </tr>
                 <tr>
                     <td>Description</td>
                     <td><textarea name='description' class="form-control" value="<?php echo isset($description) ? htmlspecialchars($description) : ''; ?>"></textarea>
