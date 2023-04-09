@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Details</title>
+    <title>ProductDetails</title>
     <meta charset="utf-8">
     <!-- Latest compiled and minified Bootstrap CSS (Apply your Bootstrap here -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,7 +35,7 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT id, name, description, price, promotion_price, manufacture_date, expired_date FROM products WHERE id = ? LIMIT 0,1";
+            $query = "SELECT id, name, catname, description, price, promotion_price, manufacture_date, expired_date FROM products WHERE id = ? LIMIT 0,1";
             $stmt = $con->prepare($query);
 
             // this is the first question mark
@@ -49,6 +49,7 @@
 
             // values to fill up our form
             $name = $row['name'];
+            $catname = $row['catname'];
             $description = $row['description'];
             $price = $row['price'];
             $promotion_price = $row['promotion_price'];
@@ -70,6 +71,11 @@
             <tr>
                 <td>Name</td>
                 <td><?php echo htmlspecialchars($name, ENT_QUOTES);  ?></td>
+            </tr>
+
+            <tr>
+                <td>Category</td>
+                <td><?php echo htmlspecialchars($catname, ENT_QUOTES);  ?></td>
             </tr>
 
             <tr>

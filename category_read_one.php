@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Details</title>
+    <title>CategoryDetails</title>
     <meta charset="utf-8">
     <!-- Latest compiled and minified Bootstrap CSS (Apply your Bootstrap here -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,72 +17,93 @@
     <?php include 'nav.php' ?>
 
 
-    <!-- container -->
-    <div class="container">
-        <div class="page-header">
-            <h1>Details</h1>
-        </div>
+    <!-- PHP read one record will be here -->
+    <?php
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
 
-        <!-- PHP read one record will be here -->
-        <?php
-        // get passed parameter value, in this case, the record ID
-        // isset() is a PHP function used to verify if a value is there or not
-        $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+    // include database connection
+    include 'config/database.php';
 
-        //include database connection
-        include 'config/database.php';
+    // retrieve category ID from URL parameter or set default value
+    $id = isset($_GET['id']) ? $_GET['id'] : 1;
 
-        // read current record's data
-        try {
-            // prepare select query
-            $query = "SELECT id, catname, descr FROM category WHERE id = ? LIMIT 0,1";
-            $stmt = $con->prepare($query);
 
-            // this is the first question mark
-            $stmt->bindParam(1, $id);
+    // validate category ID
+    if (!is_numeric($id)) {
 
-            // execute our query
-            $stmt->execute();
+        // redirect to error page or display error message
+        header("Location: error.php");
+        exit();
+    }
 
-            // store retrieved row to a variable
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    // query to select the category name
+    $category_query = "SELECT catname FROM category WHERE id = ?";
+    $category_stmt = $con->prepare($category_query);
+    $category_stmt->bindParam(1, $id);
+    $category_stmt->execute();
+    $category_row = $category_stmt->fetch(PDO::FETCH_ASSOC);
+    $catname = $category_row['catname'];
 
-            // values to fill up our form
-            $catname = $row['catname'];
-            $descr = $row['descr'];
+    // display the header with the category name
+    echo "<div class='container'>";
+    echo "<div class='page-header'>";
+    echo "<h1>" . ucfirst($catname) . "</h1>";
+    echo "</div>";
+
+    // query to select all products that belong to the category name
+    $products_query = "SELECT * FROM products JOIN category ON products.catname = category.catname WHERE category.id = ?";
+    $products_stmt = $con->prepare($products_query);
+    $products_stmt->bindParam(1, $id);
+    $products_stmt->execute();
+
+    // check if more than 0 record found
+    $num = $products_stmt->rowCount();
+
+
+
+    if ($num > 0) {
+        // display products in a table format
+        echo "<table class='table table-hover table-responsive table-bordered'>";
+        echo "<tr>";
+        echo "<th>Product ID</th>";
+        echo "<th>Product Name</th>";
+        echo "<th>Description</th>";
+        echo "<th>Price</th>";
+        echo "<th>Promotion Price</th>";
+        echo "<th>Manufacture Date</th>";
+        echo "<th>Expiry Date</th>";
+        echo "</tr>";
+
+        while ($row = $products_stmt->fetch(PDO::FETCH_ASSOC)) {
+            // extract row
+            // this will make $row['firstname'] to just $firstname only
+            extract($row);
+
+            // creating new table row per record
+            echo "<tr>";
+            echo "<td>{$id}</td>";
+            echo "<td>{$name}</td>";
+            echo "<td>{$description}</td>";
+            echo "<td>" . number_format($price, 2) . "</td>";
+            echo "<td>" . number_format($promotion_price, 2) . "</td>";
+            echo "<td>{$manufacture_date}</td>";
+            echo "<td>{$expired_date}</td>";
         }
 
-        // show error
-        catch (PDOException $exception) {
-            die('ERROR: ' . $exception->getMessage());
-        }
-        ?>
-
-
-
-        <!-- HTML read one record table will be here -->
-        <!--we have our html table here where the record will be displayed-->
-        <table class='table table-hover table-responsive table-bordered'>
-            <tr>
-                <td>Category Name</td>
-                <td><?php echo htmlspecialchars($catname, ENT_QUOTES);  ?></td>
-            </tr>
-
-            <tr>
-                <td>Description</td>
-                <td><?php echo htmlspecialchars($descr, ENT_QUOTES);  ?></td>
-            </tr>
-
-            <tr>
-                <td></td>
-                <td>
-                    <a href='category_read.php' class='btn btn-danger'>Back to read category</a>
-                </td>
-            </tr>
-        </table>
-
+        // end table
+        echo "</table>";
+    }
+    // if no records found
+    else {
+        echo "<div class='alert alert-danger'>No records found.</div>";
+    }
+    echo "<a href='category_read.php' class='btn btn-danger'>Back to read categories</a>";
+    ?>
 
     </div> <!-- end .container -->
+
+    <!-- confirm delete record will be here -->
 
 </body>
 

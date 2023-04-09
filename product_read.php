@@ -51,6 +51,7 @@
             echo "<tr>";
             echo "<th>ID</th>";
             echo "<th>Name</th>";
+            echo "<th>Category</th>";
             echo "<th>Description</th>";
             echo "<th>Price</th>";
             echo "<th>Promotion Price</th>";
@@ -69,6 +70,7 @@
                 echo "<tr>";
                 echo "<td>{$id}</td>";
                 echo "<td>{$name}</td>";
+                echo "<td>{$catname}</td>";
                 echo "<td>{$description}</td>";
                 echo "<td>" . number_format($price, 2) . "</td>";
                 echo "<td>{$promotion_price}</td>";

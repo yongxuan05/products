@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Customer</title>
+    <title>Category</title>
     <meta charset="utf-8">
     <!-- Latest compiled and minified Bootstrap CSS (Apply your Bootstrap here -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -70,7 +70,7 @@
                 echo "<td>";
 
                 // read one record
-                echo "<a href='category_read_one.php?id={$id}' class='btn btn-info m-r-1em'>Read</a>";
+                echo "<a href='category_read_one.php?id={$id}&category=<?php echo urlencode($catname); ?>' class='btn btn-info m-r-1em'>Read</a>";
 
                 // we will use this links on next part of this post
                 echo "<a href='update.php?id={$id}' class='btn btn-primary m-r-1em'>Edit</a>";
