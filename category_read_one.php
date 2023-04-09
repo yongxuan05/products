@@ -19,15 +19,11 @@
 
     <!-- PHP read one record will be here -->
     <?php
-    ini_set('display_errors', 1);
-    error_reporting(E_ALL);
+    // isset() is a PHP function used to verify if a value is there or not
+    $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
 
     // include database connection
     include 'config/database.php';
-
-    // retrieve category ID from URL parameter or set default value
-    $id = isset($_GET['id']) ? $_GET['id'] : 1;
-
 
     // validate category ID
     if (!is_numeric($id)) {
@@ -40,14 +36,23 @@
     // query to select the category name
     $category_query = "SELECT catname FROM category WHERE id = ?";
     $category_stmt = $con->prepare($category_query);
+
+    // this is the first question mark
     $category_stmt->bindParam(1, $id);
+
+    // execute our query
     $category_stmt->execute();
+
+    // store retrieved row to a variable
     $category_row = $category_stmt->fetch(PDO::FETCH_ASSOC);
+
     $catname = $category_row['catname'];
 
     // display the header with the category name
     echo "<div class='container'>";
     echo "<div class='page-header'>";
+
+    //let the first letter to capital letter
     echo "<h1>" . ucfirst($catname) . "</h1>";
     echo "</div>";
 
@@ -60,14 +65,12 @@
     // check if more than 0 record found
     $num = $products_stmt->rowCount();
 
-
-
     if ($num > 0) {
         // display products in a table format
         echo "<table class='table table-hover table-responsive table-bordered'>";
         echo "<tr>";
-        echo "<th>Product ID</th>";
-        echo "<th>Product Name</th>";
+        echo "<th>ID</th>";
+        echo "<th>Name</th>";
         echo "<th>Description</th>";
         echo "<th>Price</th>";
         echo "<th>Promotion Price</th>";
@@ -75,9 +78,9 @@
         echo "<th>Expiry Date</th>";
         echo "</tr>";
 
+        // store retrieved row to a variable
         while ($row = $products_stmt->fetch(PDO::FETCH_ASSOC)) {
-            // extract row
-            // this will make $row['firstname'] to just $firstname only
+
             extract($row);
 
             // creating new table row per record
