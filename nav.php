@@ -1,7 +1,7 @@
 <?php $currentPage = basename($_SERVER['PHP_SELF'], '.php'); ?>
 
 <!-- navbar -->
-<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="navigation bar">
+<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="navigation bar">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.php">navbar<span>.</span></a>
 
@@ -61,19 +61,17 @@
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Category
                     </a>
-
                     <ul class="dropdown-menu bg-dark">
-                        <li class="nav-item <?php if ($currentPage == 'customer_read') {
+                        <li class="nav-item <?php if ($currentPage == 'category_read') {
                                                 echo 'active';
                                             } ?>">
                             <a class="dropdown-item bg-dark" href="category_read.php">Category</a>
                         </li>
-                        <li class="nav-item <?php if ($currentPage == 'customer_create') {
+                        <li class="nav-item <?php if ($currentPage == 'category_create') {
                                                 echo 'active';
                                             } ?>">
                             <a class="dropdown-item bg-dark" href="category_create.php">Add Category</a>
                         </li>
-
                     </ul>
                 </li>
 
@@ -94,3 +92,11 @@
     </div>
 </nav>
 <!-- end Navbar -->
+
+<style>
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+</style>
+
+</html>
