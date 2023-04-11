@@ -143,7 +143,7 @@
                 </tr>
 
                 <tr>
-                    <td>Category</td>
+                    <td>Categories</td>
                     <td>
                         <select name="catname" class="form-control">
                             <option value="">-- Select Category --</option>

@@ -57,7 +57,6 @@
     echo "</div>";
 
     // query to select all products that belong to the category name
-    // $products_query = "SELECT * FROM products JOIN category ON products.catname = category.catname WHERE category.id = ?";
     $products_query = "SELECT products.id AS products_id, products.name, products.description, products.price, products.promotion_price, products.manufacture_date, products.expired_date FROM products JOIN category ON products.catname = category.catname WHERE category.id = ?";
 
     $products_stmt = $con->prepare($products_query);
