@@ -1,8 +1,15 @@
+<?php
+session_start();
+if (!isset($_SESSION["username"])) {
+    header("Location: login.php");
+}
+?>
+
 <!DOCTYPE HTML>
 <html>
 
 <head>
-    <title>Details</title>
+    <title>CustomerDetails</title>
     <meta charset="utf-8">
     <!-- Latest compiled and minified Bootstrap CSS (Apply your Bootstrap here -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +27,7 @@
     <!-- container -->
     <div class="container">
         <div class="page-header">
-            <h1>CustomerDetails</h1>
+            <h1>Details</h1>
         </div>
 
         <!-- PHP read one record will be here -->

@@ -85,7 +85,10 @@
                 <li class="nav-item <?php if ($currentPage == 'login') {
                                         echo 'active';
                                     } ?>">
-                    <a class="nav-link" href="login.php">Log out</a>
+                    <a class="nav-link" href="login.php" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Log out</a>
+                    <form id="logout-form" action="login.php" method="POST" style="display: none;">
+                        <input type="hidden" name="logout" value="true">
+                    </form>
                 </li>
             </ul>
         </div>

@@ -22,7 +22,20 @@
         <!-- PHP insert code will be here -->
 
         <?php
-        session_start();
+        session_start(); // Start the session
+
+        if (isset($_POST['logout'])) { // If the user clicked the logout button
+            session_unset(); // Unset all session variables
+            session_destroy(); // Destroy the session
+            header('Location: login.php'); // Redirect to the login page
+            exit;
+        }
+
+        if (isset($_SESSION['not_authorized'])) { // If the user is not authorized
+            echo "<div class='alert alert-danger'>Please Login, your are not authorized to access the page!!</div>";
+            unset($_SESSION['not_authorized']); // Unset the session variable to prevent displaying the message again
+        }
+
         //$_get (appear in url) and $_post (didnt appear in url) 是传送（隐形）
         if ($_POST) {
             // include database connection

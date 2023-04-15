@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION["username"])) {
+    header("Location: login.php");
+}
+?>
+
 <!DOCTYPE HTML>
 <html>
 
@@ -19,6 +26,7 @@
 
     <!-- PHP read one record will be here -->
     <?php
+
     // isset() is a PHP function used to verify if a value is there or not
     $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
 
@@ -58,7 +66,6 @@
 
     // query to select all products that belong to the category name
     $products_query = "SELECT products.id AS products_id, products.name, products.description, products.price, products.promotion_price, products.manufacture_date, products.expired_date FROM products JOIN category ON products.catname = category.catname WHERE category.id = ?";
-
     $products_stmt = $con->prepare($products_query);
     $products_stmt->bindParam(1, $id);
     $products_stmt->execute();
@@ -90,7 +97,7 @@
             echo "<td>{$name}</td>";
             echo "<td>{$description}</td>";
             echo "<td>" . number_format($price, 2) . "</td>";
-            echo "<td>" . number_format($promotion_price, 2) . "</td>";
+            echo "<td>{$promotion_price}</td>";
             echo "<td>{$manufacture_date}</td>";
             echo "<td>{$expired_date}</td>";
         }
