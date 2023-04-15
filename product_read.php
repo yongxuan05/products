@@ -80,7 +80,8 @@ if (!isset($_SESSION["username"])) {
                 echo "<td>{$catname}</td>";
                 echo "<td>{$description}</td>";
                 echo "<td>" . number_format($price, 2) . "</td>";
-                echo "<td>{$promotion_price}</td>";
+                echo "<td>" . ($promotion_price ? number_format($promotion_price, 2) : '-') . "</td>"; // display dash if no promotion price
+                echo "<td>{$manufacture_date}</td>";
                 echo "<td>{$manufacture_date}</td>";
                 echo "<td>{$expired_date}</td>";
                 echo "<td>";

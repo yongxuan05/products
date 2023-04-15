@@ -97,7 +97,16 @@ if (!isset($_SESSION["username"])) {
 
             <tr>
                 <td>Promotional Price</td>
-                <td><?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?></td>
+                <td>
+                    <?php
+                    if (!empty($promotion_price)) {
+                        echo htmlspecialchars($promotion_price, ENT_QUOTES);
+                    } else {
+                        echo "-";
+                    }
+                    ?>
+                </td>
+                </td>
             </tr>
 
             <tr>
