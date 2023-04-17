@@ -1,7 +1,9 @@
 <?php
 session_start();
-if (!isset($_SESSION["username"])) {
-    header("Location: login.php");
+if (!isset($_SESSION['username'])) { // If the user is not logged in
+    $_SESSION['not_authorized'] = "You are not authorized to access this page!";
+    header('Location: login.php'); // Redirect to the login page
+    exit;
 }
 ?>
 
