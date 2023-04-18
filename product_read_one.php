@@ -113,12 +113,12 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
             <tr>
                 <td>Manufacture Date</td>
-                <td><?php echo htmlspecialchars($manufacture_date, ENT_QUOTES);  ?></td>
+                <td><?php echo (($manufacture_date && $manufacture_date != '0000-00-00') ? $manufacture_date : '-'); ?></td>
             </tr>
 
             <tr>
                 <td>Expiry Date</td>
-                <td><?php echo htmlspecialchars($expired_date, ENT_QUOTES);  ?></td>
+                <td><?php echo (($expired_date && $expired_date != '0000-00-00') ? $expired_date : '-'); ?></td>
             </tr>
 
             <tr>

@@ -99,9 +99,9 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             echo "<td>{$name}</td>";
             echo "<td>{$description}</td>";
             echo "<td>" . number_format($price, 2) . "</td>";
-            echo "<td>{$promotion_price}</td>";
-            echo "<td>{$manufacture_date}</td>";
-            echo "<td>{$expired_date}</td>";
+            echo "<td>" . ($promotion_price ? number_format($promotion_price, 2) : '-') . "</td>"; // display dash if no promotion price
+            echo "<td>" . (($manufacture_date && $manufacture_date != '0000-00-00') ? $manufacture_date : '-') . "</td>"; // display dash if no manufacture_date
+            echo "<td>" . (($expired_date && $expired_date != '0000-00-00') ? $expired_date : '-') . "</td>";
         }
 
         // end table
