@@ -31,6 +31,18 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             <h1>Products</h1>
         </div>
 
+
+        <nav class="navbar bg-body-tertiary">
+            <div class="container-fluid d-flex justify-content-between">
+                <a href='product_create.php' class='btn btn-primary m-b-1em'>Create New Product</a>
+                <form class="d-flex" role="search" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                    <input class="form-control me-2" type="search" name="find" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success " type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+
+
         <!-- PHP code to read records will be here -->
 
         <?php
@@ -41,6 +53,13 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
         // select all data
         $query = "SELECT * FROM products";
+
+        //search
+        if ($_POST) {
+            $search = htmlspecialchars(strip_tags($_POST['find']));
+            $query = "SELECT * FROM `products` WHERE name LIKE '%" . $search . "%' ";
+        }
+
         $stmt = $con->prepare($query);
         $stmt->execute();
 
@@ -48,7 +67,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         $num = $stmt->rowCount();
 
         // link to create record form
-        echo "<a href='product_create.php' class='btn btn-primary m-b-1em'>Create New Product</a>";
+        // echo "<a href='product_create.php' class='btn btn-primary m-b-1em'>Create New Product</a>";
 
         //check if more than 0 record found
         if ($num > 0) {
@@ -81,9 +100,9 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 echo "<td>{$name}</td>";
                 echo "<td>{$catname}</td>";
                 echo "<td>{$description}</td>";
-                echo "<td>" . number_format($price, 2) . "</td>";
-                echo "<td>" . ($promotion_price ? number_format($promotion_price, 2) : '-') . "</td>"; // display dash if no promotion price
-                echo "<td>" . (($manufacture_date && $manufacture_date != '0000-00-00') ? $manufacture_date : '-') . "</td>"; // display dash if no manufacture_date
+                echo "<td >" . number_format($price, 2) . "</td>";
+                echo "<td style='text-align: right;'>" . ($promotion_price ? number_format($promotion_price, 2) : '-') . "</td>"; // display dash if no promotion price
+                echo "<td >" . (($manufacture_date && $manufacture_date != '0000-00-00') ? $manufacture_date : '-') . "</td>"; // display dash if no manufacture_date
                 echo "<td>" . (($expired_date && $expired_date != '0000-00-00') ? $expired_date : '-') . "</td>";
                 echo "<td>";
 
