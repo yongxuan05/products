@@ -61,10 +61,6 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             echo "<tr>";
             echo "<th>ID</th>";
             echo "<th>Username</th>";
-            echo "<th>First Name</th>";
-            echo "<th>Last Name</th>";
-            echo "<th>Gender</th>";
-            echo "<th>Date of Birth</th>";
             echo "<th>Register Date & Time</th>";
             echo "<th>Status</th>";
             echo "<th>Action</th>";
@@ -80,10 +76,6 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 echo "<tr>";
                 echo "<td>{$id}</td>";
                 echo "<td>{$username}</td>";
-                echo "<td>{$fname}</td>";
-                echo "<td>{$lname}</td>";
-                echo "<td>{$gender}</td>";
-                echo "<td>{$dob}</td>";
                 echo "<td>{$register}</td>";
                 echo "<td>{$status}</td>";
                 echo "<td>";
