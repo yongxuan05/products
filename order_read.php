@@ -57,7 +57,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         //search
         if ($_POST) {
             $search = htmlspecialchars(strip_tags($_POST['find']));
-            $query = "SELECT * FROM `orders` WHERE name LIKE '%" . $search . "%' ";
+            $query = "SELECT * FROM `orders` WHERE customer_name LIKE '%" . $search . "%' ";
         }
 
         $stmt = $con->prepare($query);
@@ -98,7 +98,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 echo "<td>";
 
                 // read one record
-                echo "<a href='product_read_one.php?id={$id}' class='btn btn-info m-r-1em'>Read</a>";
+                echo "<a href='order_read_one.php?id={$id}' class='btn btn-info m-r-1em'>Read</a>";
 
                 // we will use this links on next part of this post
                 echo "<a href='update.php?id={$id}' class='btn btn-primary m-r-1em'>Edit</a>";
