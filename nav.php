@@ -75,6 +75,23 @@
                     </ul>
                 </li>
 
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Order
+                    </a>
+                    <ul class="dropdown-menu bg-dark">
+                        <li class="nav-item <?php if ($currentPage == 'category_read') {
+                                                echo 'active';
+                                            } ?>">
+                            <a class="dropdown-item bg-dark" href="category_read.php">Category</a>
+                        </li>
+                        <li class="nav-item <?php if ($currentPage == 'order_create') {
+                                                echo 'active';
+                                            } ?>">
+                            <a class="dropdown-item bg-dark" href="order_create.php">Add Order</a>
+                        </li>
+                    </ul>
+                </li>
 
                 <li class="nav-item <?php if ($currentPage == 'contact') {
                                         echo 'active';

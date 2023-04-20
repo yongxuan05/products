@@ -1,9 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION['username'])) { // If the user is not logged in
-    $_SESSION['not_authorized'] = "You are not authorized to access this page!";
-    header('Location: login.php'); // Redirect to the login page
-    exit;
+if (!isset($_SESSION["username"])) {
+    header("Location: login.php");
 }
 ?>
 
@@ -168,15 +166,17 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                             $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             // dynamically populate the dropdown list with categories
                             foreach ($categories as $category) {
-                                $selected = isset($catname) && $catname == $category['id'] ? 'selected' : '';
-                                echo "<option value='{$category['id']}' {$selected}>{$category['catname']}</option>";
+                                $selected = isset($catname) && $catname == $category['catname'] ? 'selected' : '';
+                                echo "<option value='{$category['catname']}' {$selected}>{$category['catname']}</option>";
                             }
                             ?>
                         </select>
                         <?php if (isset($catname_error)) : ?>
                             <span class="text-danger"><?php echo $catname_error; ?></span>
                         <?php endif; ?>
+                    </td>
                 </tr>
+
                 <tr>
                     <td>Description</td>
                     <td><textarea name='description' class="form-control" value="<?php echo isset($description) ? htmlspecialchars($description) : ''; ?>"></textarea>
