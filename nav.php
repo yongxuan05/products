@@ -80,10 +80,10 @@
                         Order
                     </a>
                     <ul class="dropdown-menu bg-dark">
-                        <li class="nav-item <?php if ($currentPage == 'category_read') {
+                        <li class="nav-item <?php if ($currentPage == 'order_read') {
                                                 echo 'active';
                                             } ?>">
-                            <a class="dropdown-item bg-dark" href="category_read.php">Category</a>
+                            <a class="dropdown-item bg-dark" href="order_read.php">Order</a>
                         </li>
                         <li class="nav-item <?php if ($currentPage == 'order_create') {
                                                 echo 'active';
