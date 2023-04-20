@@ -49,8 +49,6 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         // include database connection
         include 'config/database.php';
 
-        // delete message prompt will be here
-
         // select all data
         $query = "SELECT * FROM products";
 

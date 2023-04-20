@@ -7,7 +7,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 }
 ?>
 
-<!doctype html>
+<!DOCTYPE HTML>
 <html lang="en">
 
 <head>
@@ -21,20 +21,8 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 </head>
 
 <body>
-
     <?php include 'nav.php' ?>
-
-    <!-- Start Hero Section -->
-    <div class="hero">
-        <div class="herocon">
-            <h1>Welcome</h1>
-            <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam
-                vulputate velit imperdiet dolor tempor tristique.</p>
-            <p class="btn"><a href="product_create.php" class="btn me-2">Create Product Now</a></p>
-        </div>
-    </div>
-    <!-- End Hero Section -->
-
+    <?php include 'latest_product.php' ?>
 </body>
 
 </html>

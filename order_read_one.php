@@ -90,32 +90,85 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
             <tr>
                 <td>Product 1</td>
-                <td><?php echo htmlspecialchars($product1, ENT_QUOTES);  ?></td>
+                <td>
+                    <?php
+                    if (!empty($product1)) {
+                        echo htmlspecialchars($product1, ENT_QUOTES);
+                    } else {
+                        echo "-";
+                    }
+                    ?>
+                </td>
+                </td>
             </tr>
 
             <tr>
                 <td>Quantity</td>
-                <td><?php echo htmlspecialchars($quantity1, ENT_QUOTES);  ?></td>
+                <td>
+                    <?php
+                    if (!empty($quantity1)) {
+                        echo htmlspecialchars($quantity1, ENT_QUOTES);
+                    } else {
+                        echo "-";
+                    }
+                    ?>
+                </td>
+                </td>
             </tr>
 
             <tr>
                 <td>Product 2</td>
-                <td><?php echo htmlspecialchars($product2, ENT_QUOTES);  ?></td>
+                <td>
+                    <?php
+                    if (!empty($product2)) {
+                        echo htmlspecialchars($product2, ENT_QUOTES);
+                    } else {
+                        echo "-";
+                    }
+                    ?>
+                </td>
+                </td>
             </tr>
 
             <tr>
                 <td>Quantity</td>
-                <td><?php echo htmlspecialchars($quantity2, ENT_QUOTES);  ?></td>
+                <td>
+                    <?php
+                    if (!empty($quantity2)) {
+                        echo htmlspecialchars($quantity2, ENT_QUOTES);
+                    } else {
+                        echo "-";
+                    }
+                    ?>
+                </td>
+                </td>
             </tr>
 
             <tr>
                 <td>Product 3</td>
-                <td><?php echo htmlspecialchars($product3, ENT_QUOTES);  ?></td>
+                <td>
+                    <?php
+                    if (!empty($product3)) {
+                        echo htmlspecialchars($product3, ENT_QUOTES);
+                    } else {
+                        echo "-";
+                    }
+                    ?>
+                </td>
+                </td>
             </tr>
-
             <tr>
                 <td>Quantity</td>
-                <td><?php echo htmlspecialchars($quantity3, ENT_QUOTES);  ?></td>
+                <td>
+                    <?php
+                    if (!empty($quantity3)) {
+                        echo htmlspecialchars($quantity3, ENT_QUOTES);
+                    } else {
+                        echo "-";
+                    }
+                    ?>
+                </td>
+                </td>
             </tr>
 
 

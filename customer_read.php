@@ -32,6 +32,17 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             <h1>Customers</h1>
         </div>
 
+        <nav class="navbar bg-body-tertiary">
+            <div class="container-fluid d-flex justify-content-between">
+                <a href='customer_create.php' class='btn btn-primary m-b-1em'>Create New Customer</a>
+                <form class="d-flex" role="search" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                    <input class="form-control me-2" type="search" name="find" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success " type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+
+
         <!-- PHP code to read records will be here -->
 
         <?php
@@ -42,14 +53,18 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
         // select all data
         $query = "SELECT * FROM customers";
+
+        //search
+        if ($_POST) {
+            $search = htmlspecialchars(strip_tags($_POST['find']));
+            $query = "SELECT * FROM `customers` WHERE username LIKE '%" . $search . "%' ";
+        }
+
         $stmt = $con->prepare($query);
         $stmt->execute();
 
         // this is how to get number of rows returned
         $num = $stmt->rowCount();
-
-        // link to create record form
-        echo "<a href='customer_create.php' class='btn btn-primary m-b-1em'>Create New Customer</a>";
 
         //check if more than 0 record found
         if ($num > 0) {
