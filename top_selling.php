@@ -16,49 +16,48 @@
     // include database connection
     include 'config/database.php';
     try {
-        function get_top_selling_products($con)
+        function get_top_selling_product($con)
         {
-            // fetch top selling products
-            $query = "SELECT products.id, products.name, SUM(orders.quantity1 + orders.quantity2 + orders.quantity3) AS total 
+            // fetch top selling product
+            $query = "SELECT products.id, products.name, products.price, SUM(orders.quantity) AS total 
             FROM orders 
-            JOIN products ON orders.product1=products.name OR orders.product2=products.name OR orders.product3=products.name
+            JOIN products ON orders.product=products.name
             WHERE orders.created >= DATE(NOW()) - INTERVAL 7 DAY 
-            GROUP BY products.id, products.name 
+            GROUP BY products.id, products.name, products.price
             ORDER BY total DESC 
-            LIMIT 10";
+            LIMIT 1";
             $stmt = $con->prepare($query);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
-        // get top selling products
-        $top_selling_products = get_top_selling_products($con);
+        // get top selling product
+        $top_selling_product = get_top_selling_product($con);
     } catch (PDOException $exception) {
         die('ERROR: ' . $exception->getMessage());
     }
     ?>
 
-    <?php if (!empty($top_selling_products)) { ?>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-
-                    <th>Product Name</th>
-                    <th>Total Quantity Sold</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($top_selling_products as $product) { ?>
-                    <tr>
-                        <td><?php echo $product['name']; ?></td>
-                        <td><?php echo $product['total']; ?></td>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-    <?php } else { ?>
-        <p>No top selling products found.</p>
-    <?php } ?>
+    <div class="container">
+        <h2>Top Selling Product</h2>
+        <div class="row">
+            <?php if (isset($top_selling_product)) : ?>
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-body" style="color: white;">
+                            <h5 class="card-title"><?php echo $top_selling_product['name']; ?></h5>
+                            <p class="card-text"><?php echo $top_selling_product['total']; ?> units sold</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="#" class="btn btn-sm btn-outline-secondary" style="color: white;">View</a>
+                                    <a href="#" class="btn btn-sm btn-outline-secondary" style="color: white;">Add to Cart</a>
+                                </div>
+                                <small class="text" style="color: white;">RM<?php echo $top_selling_product['price']; ?></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
 </body>
-
-</html>
