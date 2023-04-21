@@ -52,7 +52,7 @@
                             <?php endif; ?>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <a href="#" class="btn btn-sm btn-outline-secondary" style="color: white;">View</a>
+                                    <a href="product_read_one.php?id=<?php echo $product['id']; ?>" class="btn btn-sm btn-outline-secondary" style="color: white;">View</a>
                                 </div>
                                 <small class="text" style="color: white;">RM<?php echo $product['price']; ?></small>
                             </div>
