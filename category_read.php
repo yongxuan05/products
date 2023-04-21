@@ -17,7 +17,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link href="style.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pathway+Extreme:wght@300&display=swap" rel="stylesheet">
 
 
 </head>
@@ -97,13 +97,17 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             echo "</tr>";
 
             // retrieve our table contents
+            $row_number = 0;
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 // extract row
                 // this will make $row['firstname'] to just $firstname only
                 extract($row);
 
+                // set font weight based on row number
+                $font_weight = ($row_number % 2 == 0) ? 'lighter' : 'bold';
+
                 // creating new table row per record
-                echo "<tr>";
+                echo "<tr style='font-weight: {$font_weight}'>";
                 echo "<td>{$id}</td>";
                 echo "<td>{$catname}</td>";
                 echo "<td style='max-width: 800px; overflow: hidden; text-overflow: ellipsis;'>{$descr}</td>";
@@ -118,6 +122,9 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 echo "<a href='#' onclick='delete_user({$id});'  class='btn btn-danger' style='margin-right: 10px;'>Delete</a>";
                 echo "</td>";
                 echo "</tr>";
+
+                // increment row number
+                $row_number++;
             }
 
 
