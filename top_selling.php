@@ -50,7 +50,6 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
                                     <a href="#" class="btn btn-sm btn-outline-secondary" style="color: white;">View</a>
-                                    <a href="#" class="btn btn-sm btn-outline-secondary" style="color: white;">Add to Cart</a>
                                 </div>
                                 <small class="text" style="color: white;">RM<?php echo $top_selling_product['price']; ?></small>
                             </div>

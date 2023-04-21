@@ -24,6 +24,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
     <?php include 'nav.php' ?>
     <?php include 'latest_product.php' ?>
     <?php include 'top_selling.php' ?>
+    <?php include 'lowest_selling.php' ?>
 </body>
 
 </html>

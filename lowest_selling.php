@@ -16,38 +16,44 @@
     // include database connection
     include 'config/database.php';
 
-    if (isset($_POST['id'])) {
-        try {
-            // fetch product with specified id from the database
-            $query = "SELECT * FROM products WHERE id = ? LIMIT 0,1";
-            $stmt = $con->prepare($query);
-            $stmt->execute([$_POST['id']]);
-            $product = $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $exception) {
-            die('ERROR: ' . $exception->getMessage());
-        }
-    } else {
-        try {
-            // fetch product with the largest id from the database
-            $query = "SELECT * FROM products ORDER BY id DESC LIMIT 1";
+    try {
+        function get_lowest_quantity_product($con)
+        {
+            // fetch products with lowest quantity
+            $query = "SELECT products.id, products.name, products.price, COALESCE(SUM(orders.quantity), 0) AS total 
+                FROM products
+                LEFT JOIN orders ON orders.product=products.name AND orders.created >= DATE(NOW()) - INTERVAL 7 DAY 
+                GROUP BY products.id, products.name, products.price
+                HAVING total = (
+                    SELECT COALESCE(SUM(orders.quantity), 0) AS lowest_total
+                    FROM products
+                    LEFT JOIN orders ON orders.product=products.name AND orders.created >= DATE(NOW()) - INTERVAL 7 DAY 
+                    GROUP BY products.id, products.name, products.price
+                    ORDER BY lowest_total ASC 
+                    LIMIT 1
+                )";
             $stmt = $con->prepare($query);
             $stmt->execute();
-            $product = $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $exception) {
-            die('ERROR: ' . $exception->getMessage());
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        // get product with lowest quantity
+        $lowest_quantity_product = get_lowest_quantity_product($con);
+    } catch (PDOException $exception) {
+        die('ERROR: ' . $exception->getMessage());
     }
     ?>
 
     <div class="container">
-        <h2>Latest Product</h2>
+        <h2>Products with Lowest Quantity</h2>
         <div class="row">
-            <?php if (isset($product)) : ?>
+            <?php $products = get_lowest_quantity_product($con); ?>
+            <?php foreach ($products as $product) : ?>
                 <div class="col-md-4">
                     <div class="card mb-4 box-shadow">
                         <div class="card-body" style="color: white;">
                             <h5 class="card-title"><?php echo $product['name']; ?></h5>
-                            <p class="card-text"><?php echo $product['description']; ?></p>
+                            <p class="card-text"><?php echo $product['total']; ?> units sold</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
                                     <a href="#" class="btn btn-sm btn-outline-secondary" style="color: white;">View</a>
@@ -57,11 +63,7 @@
                         </div>
                     </div>
                 </div>
-            <?php endif; ?>
+            <?php endforeach; ?>
         </div>
     </div>
-
-
 </body>
-
-</html>
