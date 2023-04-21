@@ -44,7 +44,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT id, customer_name, product1, product2, product3, quantity1, quantity2, quantity3 FROM orders WHERE id = ? LIMIT 0,1";
+            $query = "SELECT id, customer_name, product, quantity, created FROM orders WHERE id = ? LIMIT 0,1";
             $stmt = $con->prepare($query);
 
             // this is the first question mark
@@ -59,12 +59,9 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             // values to fill up our form
             $id = $row['id'];
             $customer_name = $row['customer_name'];
-            $product1 = $row['product1'];
-            $quantity1 = $row['quantity1'];
-            $product2 = $row['product2'];
-            $quantity2 = $row['quantity2'];
-            $product3 = $row['product3'];
-            $quantity3 = $row['quantity3'];
+            $product = $row['product'];
+            $quantity = $row['quantity'];
+            $created = $row['created'];
         }
 
         // show error
@@ -89,11 +86,11 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             </tr>
 
             <tr>
-                <td>Product 1</td>
+                <td>Product</td>
                 <td>
                     <?php
-                    if (!empty($product1)) {
-                        echo htmlspecialchars($product1, ENT_QUOTES);
+                    if (!empty($product)) {
+                        echo htmlspecialchars($product, ENT_QUOTES);
                     } else {
                         echo "-";
                     }
@@ -106,8 +103,8 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 <td>Quantity</td>
                 <td>
                     <?php
-                    if (!empty($quantity1)) {
-                        echo htmlspecialchars($quantity1, ENT_QUOTES);
+                    if (!empty($quantity)) {
+                        echo htmlspecialchars($quantity, ENT_QUOTES);
                     } else {
                         echo "-";
                     }
@@ -117,11 +114,11 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             </tr>
 
             <tr>
-                <td>Product 2</td>
+                <td>Order Date</td>
                 <td>
                     <?php
-                    if (!empty($product2)) {
-                        echo htmlspecialchars($product2, ENT_QUOTES);
+                    if (!empty($created)) {
+                        echo htmlspecialchars($created, ENT_QUOTES);
                     } else {
                         echo "-";
                     }
@@ -129,48 +126,6 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 </td>
                 </td>
             </tr>
-
-            <tr>
-                <td>Quantity</td>
-                <td>
-                    <?php
-                    if (!empty($quantity2)) {
-                        echo htmlspecialchars($quantity2, ENT_QUOTES);
-                    } else {
-                        echo "-";
-                    }
-                    ?>
-                </td>
-                </td>
-            </tr>
-
-            <tr>
-                <td>Product 3</td>
-                <td>
-                    <?php
-                    if (!empty($product3)) {
-                        echo htmlspecialchars($product3, ENT_QUOTES);
-                    } else {
-                        echo "-";
-                    }
-                    ?>
-                </td>
-                </td>
-            </tr>
-            <tr>
-                <td>Quantity</td>
-                <td>
-                    <?php
-                    if (!empty($quantity3)) {
-                        echo htmlspecialchars($quantity3, ENT_QUOTES);
-                    } else {
-                        echo "-";
-                    }
-                    ?>
-                </td>
-                </td>
-            </tr>
-
 
             <tr>
                 <td></td>

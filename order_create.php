@@ -34,17 +34,13 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
         <!-- html form to create product will be here -->
         <!-- PHP insert code will be here -->
-
         <?php
-
-        //$_get (appear in url) and $_post (didnt appear in url) 是传送（隐形）
-        if ($_POST) {
-            // include database connection
+        // Check if form is submitted
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Include database connection
             include 'config/database.php';
-            try { //if insert wrong will go to catch
-
-                // posted values
-                //html是防止JavaScript&入侵
+            try {
+                // Sanitize and validate input fields
                 $customer_name = htmlspecialchars(strip_tags($_POST['customer_name']));
                 $product1 = htmlspecialchars(strip_tags($_POST['product1']));
                 $product2 = htmlspecialchars(strip_tags($_POST['product2']));
@@ -53,87 +49,68 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 $quantity2 = htmlspecialchars(strip_tags($_POST['quantity2']));
                 $quantity3 = htmlspecialchars(strip_tags($_POST['quantity3']));
 
-                // fetch products from the database
-                $query = "SELECT id, 'username' FROM customers";
-                $query = "SELECT id, 'name' FROM products";
+                // Fetch products and customers from the database
+                $query = "SELECT id, username FROM customers";
                 $stmt = $con->prepare($query);
                 $stmt->execute();
-                $category = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $customers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                // check if any field is empty
+                $query = "SELECT id, name FROM products";
+                $stmt = $con->prepare($query);
+                $stmt->execute();
+                $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                // Check if any field is empty
+                $customer_name_error = empty($customer_name) ? "Please select username" : "";
+                $product_error = empty($product) ? "Please select product" : "";
+                $quantity_error = empty($quantity) ? "Please enter product quantity" : "";
+
+                // Set default customer and product if not selected
+                $default_customer = $customers[0]['id'];
+                $default_product = $products[0]['id'];
+
+                // Bind customer and product to the query if selected, otherwise bind the default value
+                $stmt->bindParam(':customer_name', $customer_name);
+                $stmt->bindParam(':product', $product);
                 if (empty($customer_name)) {
-                    $customer_name_error = "Please select username";
+                    $stmt->bindValue(':customer_name', $default_customer);
                 }
                 if (empty($product1)) {
-                    $product1_error = "Please select product";
-                }
-                if (empty($quantity1)) {
-                    $quantity1_error = "Please enter product quantity";
+                    $stmt->bindValue(':product', $default_product);
                 }
 
-                if (!empty($customer_name)) {
-                    $stmt->bindParam(':customer_name', $customer_name);
-                } else {
-                    $stmt->bindValue(':customer_name', $category[0]['id']);
-                }
+                // Check if there are any errors
+                if (empty($customer_name_error) && empty($product_error) && empty($quantity_error)) {
+                    // Prepare and execute insert query for each product
+                    for ($i = 0; $i < 3; $i++) {
+                        $product = ${"product" . ($i + 1)};
+                        $quantity = ${"quantity" . ($i + 1)};
+                        if (!empty($product)) {
+                            $query = "INSERT INTO orders SET customer_name=:customer_name, product=:product, quantity=:quantity, created=:created";
+                            $stmt = $con->prepare($query);
+                            $stmt->bindParam(':customer_name', $customer_name);
+                            $stmt->bindParam(':product', $product);
+                            $stmt->bindParam(':quantity', $quantity);
 
-                if (!empty($product1)) {
-                    $stmt->bindParam(':product1', $product1);
-                } else {
-                    $stmt->bindValue(':product1', $category[0]['id']);
-                }
-                if (!empty($product2)) {
-                    $stmt->bindParam(':product2', $product2);
-                } else {
-                    $stmt->bindValue(':product2', $category[0]['id']);
-                }
-                if (!empty($product3)) {
-                    $stmt->bindParam(':product3', $product3);
-                } else {
-                    $stmt->bindValue(':product3', $category[0]['id']);
-                }
+                            $created = date('Y-m-d H:i:s');
+                            $stmt->bindParam(':created', $created);
 
-                // check if there are any errors
-                if (!isset($customer_name_error) && !isset($product1_error) && !isset($quantity1_error)) {
-
-
-                    // insert query
-                    $query = "INSERT INTO orders SET customer_name=:customer_name, product1=:product1, product2=:product2, product3=:product3, quantity1=:quantity1, quantity2=:quantity2, quantity3=:quantity3, created=:created"; // info insert to blindParam
-
-                    // prepare query for execution
-                    $stmt = $con->prepare($query);
-
-                    // bind the parameters
-                    $stmt->bindParam(':customer_name', $customer_name);
-                    $stmt->bindParam(':product1', $product1);
-                    $stmt->bindParam(':product2', $product2);
-                    $stmt->bindParam(':product3', $product3);
-                    $stmt->bindParam(':quantity1', $quantity1);
-                    $stmt->bindParam(':quantity2', $quantity2);
-                    $stmt->bindParam(':quantity3', $quantity3);
-
-                    // specify when this record was inserted to the database
-                    $created = date('Y-m-d H:i:s');
-                    $stmt->bindParam(':created', $created);
-
-                    // Execute the query
-                    if ($stmt->execute()) {
-                        echo "<div class='alert alert-success'>Record was saved.</div>";
-                        $customer_name = "";
-                        $product1 = "";
-                        $product2 = "";
-                        $product3 = "";
-                        $quantity1 = "";
-                        $quantity2 = "";
-                        $quantity3 = "";
-                    } else {
-                        echo "<div class='alert alert-danger'>Unable to save record. Please fill in all required fields.</div>";
+                            if ($stmt->execute()) {
+                                echo "<div class='alert alert-success'>Record was saved.</div>";
+                                $customer_name = "";
+                                $product1 = "";
+                                $product2 = "";
+                                $product3 = "";
+                                $quantity1 = "";
+                                $quantity2 = "";
+                                $quantity3 = "";
+                            } else {
+                                echo "<div class='alert alert-danger'>Unable to save record. Please fill in all the required fields.</div>";
+                            }
+                        }
                     }
                 }
-            }
-
-            // show error
-            catch (PDOException $exception) {
+            } catch (PDOException $exception) {
                 die('ERROR: ' . $exception->getMessage());
             }
         }
@@ -189,14 +166,14 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                             }
                             ?>
                         </select>
-                        <?php if (isset($product1_error)) : ?>
-                            <span class="text-danger"><?php echo $product1_error; ?></span>
+                        <?php if (isset($product_error)) : ?>
+                            <span class="text-danger"><?php echo $product_error; ?></span>
                         <?php endif; ?>
 
 
                     <td>Quantity</td>
                     <td><input type="number" name="quantity1" class="form-control" value="<?php echo isset($quantity1) ? htmlspecialchars($quantity1) : ''; ?>" />
-                        <?php if (isset($quantity1_error)) { ?><span class="text-danger"><?php echo $quantity1_error; ?></span><?php } ?></td>
+                        <?php if (isset($quantity_error)) { ?><span class="text-danger"><?php echo $quantity_error; ?></span><?php } ?></td>
 
                     </td>
                 </tr>

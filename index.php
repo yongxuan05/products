@@ -23,6 +23,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 <body>
     <?php include 'nav.php' ?>
     <?php include 'latest_product.php' ?>
+    <?php include 'top_selling.php' ?>
 </body>
 
 </html>

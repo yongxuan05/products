@@ -76,9 +76,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             echo "<tr>";
             echo "<th>ID</th>";
             echo "<th>Username</th>";
-            echo "<th>Product 1</th>";
-            echo "<th>Product 2</th>";
-            echo "<th>Product 3</th>";
+            echo "<th>Product </th>";
             echo "<th>Action</th>";
             echo "</tr>";
 
@@ -92,9 +90,8 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 echo "<tr>";
                 echo "<td>{$id}</td>";
                 echo "<td>{$customer_name}</td>";
-                echo "<td >" . (($product1 && $product1 != '0') ? $product1 : '-') . "</td>"; // display dash if no product
-                echo "<td >" . (($product2 && $product2 != '0') ? $product2 : '-') . "</td>"; // display dash if no product
-                echo "<td >" . (($product3 && $product3 != '0') ? $product3 : '-') . "</td>"; // display dash if no product
+                echo "<td >" . (($product && $product != '0') ? $product : '-') . "</td>"; // display dash if no product
+
                 echo "<td>";
 
                 // read one record
