@@ -60,11 +60,25 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             $query = "SELECT * FROM `orders` WHERE customer_name LIKE '%" . $search . "%' ";
         }
 
+        // get total number of orders
+        $total_query = "SELECT COUNT(*) as total FROM orders";
+        $total_stmt = $con->prepare($total_query);
+        $total_stmt->execute();
+        $total = $total_stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+
         $stmt = $con->prepare($query);
         $stmt->execute();
 
         // this is how to get number of rows returned
         $num = $stmt->rowCount();
+
+        // display total number of orders
+        echo "<div class='row mt-3'>
+         <div class='col-md-12'>
+         <p style='text-align:right'>Total orders: " . $total . "</p>
+         </div>
+         </div>";
 
         //check if more than 0 record found
         if ($num > 0) {

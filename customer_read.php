@@ -34,7 +34,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
         <nav class="navbar bg-body-tertiary">
             <div class="container-fluid d-flex justify-content-between">
-                <a href='customer_create.php' class='btn btn-primary m-b-1em'>Create New Customer</a>
+                <a href='customer_create.php' class='btn btn-primary m-b-1em'>Add New Customer</a>
                 <form class="d-flex" role="search" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                     <input class="form-control me-2" type="search" name="find" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success " type="submit">Search</button>
@@ -49,7 +49,6 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         // include database connection
         include 'config/database.php';
 
-        // delete message prompt will be here
 
         // select all data
         $query = "SELECT * FROM customers";
@@ -60,11 +59,25 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             $query = "SELECT * FROM `customers` WHERE username LIKE '%" . $search . "%' ";
         }
 
+        // get total number of customer
+        $total_query = "SELECT COUNT(*) as total FROM customers";
+        $total_stmt = $con->prepare($total_query);
+        $total_stmt->execute();
+        $total = $total_stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+
         $stmt = $con->prepare($query);
         $stmt->execute();
 
         // this is how to get number of rows returned
         $num = $stmt->rowCount();
+
+        // display total number of orders
+        echo "<div class='row mt-3'>
+         <div class='col-md-12'>
+         <p style='text-align:right'>Total customers: " . $total . "</p>
+         </div>
+         </div>";
 
         //check if more than 0 record found
         if ($num > 0) {

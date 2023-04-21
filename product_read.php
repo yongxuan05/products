@@ -34,7 +34,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
         <nav class="navbar bg-body-tertiary">
             <div class="container-fluid d-flex justify-content-between">
-                <a href='product_create.php' class='btn btn-primary m-b-1em'>Create New Product</a>
+                <a href='product_create.php' class='btn btn-primary m-b-1em'>Add New Product</a>
                 <form class="d-flex" role="search" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                     <input class="form-control me-2" type="search" name="find" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success " type="submit">Search</button>
@@ -52,11 +52,17 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         // select all data
         $query = "SELECT * FROM products";
 
-        //search
+        //search bar
         if ($_POST) {
             $search = htmlspecialchars(strip_tags($_POST['find']));
             $query = "SELECT * FROM `products` WHERE name LIKE '%" . $search . "%' ";
         }
+
+        // get total number of products      
+        $total_query = "SELECT COUNT(*) as total FROM products";
+        $total_stmt = $con->prepare($total_query);
+        $total_stmt->execute();
+        $total = $total_stmt->fetch(PDO::FETCH_ASSOC)['total'];
 
         $stmt = $con->prepare($query);
         $stmt->execute();
@@ -64,8 +70,12 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         // this is how to get number of rows returned
         $num = $stmt->rowCount();
 
-        // link to create record form
-        // echo "<a href='product_create.php' class='btn btn-primary m-b-1em'>Create New Product</a>";
+        // display total number of products
+        echo "<div class='row mt-3'>
+        <div class='col-md-12'>
+        <p style='text-align:right'>Total products: " . $total . "</p>
+        </div>
+        </div>";
 
         //check if more than 0 record found
         if ($num > 0) {
