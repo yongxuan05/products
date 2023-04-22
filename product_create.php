@@ -147,13 +147,13 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
-                    <td>Name</td>
+                    <td style="font-weight: bold;">Name</td>
                     <td><input type='text' name='name' class="form-control" value="<?php echo isset($name) ? htmlspecialchars($name) : ''; ?>" />
                         <?php if (isset($name_error)) { ?><span class="text-danger"><?php echo $name_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td>Categories</td>
+                    <td style="font-weight: bold;">Categories</td>
                     <td>
                         <select name="catname" class="form-control">
                             <option value="">-- Select Category --</option>
@@ -179,31 +179,31 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 </tr>
 
                 <tr>
-                    <td>Description</td>
+                    <td style="font-weight: bold;">Description</td>
                     <td><textarea name='description' class="form-control" value="<?php echo isset($description) ? htmlspecialchars($description) : ''; ?>"></textarea>
                         <?php if (isset($description_error)) { ?><span class="text-danger"><?php echo  $description_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td>Price</td>
+                    <td style="font-weight: bold;">Price</td>
                     <td><input type="number" name="price" class="form-control" value="<?php echo isset($price) ? htmlspecialchars($price) : ''; ?>" />
                         <?php if (isset($price_error)) { ?><span class="text-danger"><?php echo $price_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td>Promotion Price</td>
+                    <td style="font-weight: bold;">Promotion Price</td>
                     <td><input type="number" name="promotion_price" class="form-control" value="<?php echo isset($promotion_price) ? htmlspecialchars($promotion_price) : ''; ?>" />
                         <?php if (isset($promotion_price_error)) { ?><span class="text-danger"><?php echo $promotion_price_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td>Manufacture Date</td>
+                    <td style="font-weight: bold;">Manufacture Date</td>
                     <td><input type="date" name="manufacture_date" class="form-control" value="<?php echo isset($manufacture_date) ? htmlspecialchars($manufacture_date) : ''; ?>" />
                         <?php if (isset($manufacture_date_error)) { ?><span class="text-danger"><?php echo $manufacture_date_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td>Expired Date</td>
+                    <td style="font-weight: bold;">Expired Date</td>
                     <td><input type="date" name="expired_date" class="form-control" value="<?php echo isset($expired_date) ? htmlspecialchars($expired_date) : ''; ?>" />
                         <?php if (isset($expired_date_error)) { ?><span class="text-danger"><?php echo $expired_date_error; ?></span><?php } ?></td>
                 </tr>

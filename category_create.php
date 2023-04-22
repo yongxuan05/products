@@ -92,12 +92,12 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
-                    <td>Category Name</td>
+                    <td style="font-weight: bold;">Category Name</td>
                     <td><input type='text' name='catname' class="form-control" value="<?php echo isset($catname) ? htmlspecialchars($catname) : ''; ?>" />
                         <?php if (isset($catname_error)) { ?><span class="text-danger"><?php echo $catname_error; ?></span><?php } ?></td>
                 </tr>
                 <tr>
-                    <td>Description</td>
+                    <td style="font-weight: bold;">Description</td>
                     <td><textarea name='descr' class="form-control"><?php echo isset($descr) ? htmlspecialchars($descr) : ''; ?></textarea>
                         <?php if (isset($descr_error)) { ?><span class="text-danger"><?php echo  $descr_error; ?></span><?php } ?></td>
                 </tr>

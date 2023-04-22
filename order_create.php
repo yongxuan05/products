@@ -138,7 +138,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
-                    <td>Username</td>
+                    <td style="font-weight: bold;">Username</td>
                     <td>
                         <?php
                         // Assign the value of customer_name to a variable
@@ -170,7 +170,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 </tr>
 
                 <tr>
-                    <td>Products 1</td>
+                    <td style="font-weight: bold;">Products 1</td>
                     <td>
                         <select name="product1" class="form-control">
                             <option value="">-- Select Products --</option>
@@ -194,14 +194,14 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                         <?php endif; ?>
 
 
-                    <td>Quantity</td>
+                    <td style="font-weight: bold;">Quantity</td>
                     <td><input type="number" name="quantity1" class="form-control" value="<?php echo isset($quantity1) ? htmlspecialchars($quantity1) : ''; ?>" />
                         <?php if (isset($quantity1_error)) { ?><span class="text-danger"><?php echo $quantity1_error; ?></span><?php } ?></td>
                     </td>
                 </tr>
 
                 <tr>
-                    <td>Products 2</td>
+                    <td style="font-weight: bold;">Products 2</td>
                     <td>
                         <select name="product2" class="form-control">
                             <option value="">-- Select Products --</option>
@@ -221,14 +221,14 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                             ?>
                         </select>
 
-                    <td>Quantity</td>
+                    <td style="font-weight: bold;">Quantity</td>
                     <td><input type="number" name="quantity2" class="form-control" value="<?php echo isset($quantity2) ? htmlspecialchars($quantity2) : ''; ?>" />
                         <?php if (isset($quantity2_error)) { ?><span class="text-danger"><?php echo $quantity2_error; ?></span><?php } ?></td>
                     </td>
                 </tr>
 
                 <tr>
-                    <td>Products 3</td>
+                    <td style="font-weight: bold;">Products 3</td>
                     <td>
                         <select name="product3" class="form-control">
                             <option value="">-- Select Products --</option>
@@ -248,7 +248,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                             ?>
                         </select>
 
-                    <td>Quantity</td>
+                    <td style="font-weight: bold;">Quantity</td>
                     <td><input type="number" name="quantity3" class="form-control" value="<?php echo isset($quantity3) ? htmlspecialchars($quantity3) : ''; ?>" />
                         <?php if (isset($quantity3_error)) { ?><span class="text-danger"><?php echo $quantity3_error; ?></span><?php } ?></td>
                     </td>

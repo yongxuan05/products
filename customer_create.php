@@ -155,38 +155,39 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         <!-- html form here where the customer information will be entered -->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <table class='table table-hover table-responsive table-bordered'>
+
                 <tr>
-                    <td>Username</td>
+                    <td style="font-weight: bold;">Username</td>
                     <td><input type="text" name='username' class="form-control" value="<?php echo isset($username) ? htmlspecialchars($username) : ''; ?>" />
                         <?php if (isset($username_error)) { ?><span class="text-danger"><?php echo $username_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td>First Name</td>
+                    <td style="font-weight: bold;">First Name</td>
                     <td><input type="text" name="fname" class="form-control" value="<?php echo isset($fname) ? htmlspecialchars($fname) : ''; ?>" />
                         <?php if (isset($fname_error)) { ?><span class="text-danger"><?php echo $fname_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td>Last Name</td>
+                    <td style="font-weight: bold;">Last Name</td>
                     <td><input type="text" name="lname" class="form-control" value="<?php echo isset($lname) ? htmlspecialchars($lname) : ''; ?>" />
                         <?php if (isset($lname_error)) { ?><span class="text-danger"><?php echo $lname_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td>Password</td>
+                    <td style="font-weight: bold;">Password</td>
                     <td><input type="password" name='Password' class="form-control" value="<?php echo isset($Password) ? htmlspecialchars($Password) : ''; ?>" />
                         <?php if (isset($Password_error)) { ?><span class="text-danger"><?php echo $Password_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td>Confirm Password</td>
+                    <td style="font-weight: bold;">Confirm Password</td>
                     <td><input type="password" name='CPassword' class="form-control" value="<?php echo isset($CPassword) ? htmlspecialchars($Password) : ''; ?>" />
                         <?php if (isset($CPassword_error)) { ?><span class="text-danger"><?php echo $CPassword_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td>Gender</td>
+                    <td style="font-weight: bold;">Gender</td>
                     <td>
                         <input type="radio" name="gender" <?php if (isset($gender) && $gender == "female") echo "checked"; ?> value="female">Female
                         <input type="radio" name="gender" <?php if (isset($gender) && $gender == "male") echo "checked"; ?> value="male">Male
@@ -196,13 +197,13 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 </tr>
 
                 <tr>
-                    <td>Date of Birth</td>
+                    <td style="font-weight: bold;">Date of Birth</td>
                     <td><input type="date" name="dob" class="form-control" value="<?php echo isset($dob) ? htmlspecialchars($dob) : ''; ?>" />
                         <?php if (isset($dob_error)) { ?><span class="text-danger"><?php echo $dob_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td>Status</td>
+                    <td style="font-weight: bold;">Status</td>
                     <td>
                         <input type="radio" name="status" <?php if (isset($status) && $status == "active") echo "checked"; ?> value="active">Active
                         <input type="radio" name="status" <?php if (isset($status) && $status == "inactive") echo "checked"; ?> value="inactive">Inactive
