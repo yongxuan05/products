@@ -40,7 +40,7 @@
     }
     ?>
 
-    <div class="container">
+    <div class="container" style="margin-top: 20px;">
         <h2>Latest Product</h2>
         <div class="row">
             <?php if (isset($product)) : ?>

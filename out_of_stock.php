@@ -37,7 +37,7 @@
     }
     ?>
 
-    <div class="container">
+    <div class="container" style="margin-top: 20px;">
         <h2>Products with Out of Stock</h2>
         <div class="row">
             <?php $products = out_of_stock_product($con); ?>

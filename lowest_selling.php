@@ -44,7 +44,7 @@
     }
     ?>
 
-    <div class="container">
+    <div class="container" style="margin-top: 20px;">
         <h2>Products with Lowest Quantity</h2>
         <div class="row">
             <?php $products = get_lowest_quantity_product($con); ?>
