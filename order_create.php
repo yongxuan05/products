@@ -35,7 +35,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         <!-- PHP insert code will be here -->
         <?php
         // Check if form is submitted
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if ($_POST) {
             // Include database connection
             include 'config/database.php';
             try {
