@@ -70,7 +70,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 echo "<td><strong>Product</strong></td>";
                 echo "<td><strong>Quantity</strong></td>";
                 echo "<td><strong>Price</strong></td>";
-                echo "<td><strong>Total Price</strong></td>";
+                echo "<td><strong>Sub Price</strong></td>";
                 echo "<td><strong>Order Date</strong></td>";
                 echo "</tr>";
 
