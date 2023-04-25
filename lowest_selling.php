@@ -20,12 +20,12 @@
         function get_lowest_quantity_product($con)
         {
             // fetch products with lowest quantity
-            $query = "SELECT products.id, products.name, products.price, COALESCE(SUM(orders.quantity), 0) AS total 
+            $query = "SELECT products.id, products.name, products.price, COALESCE(SUM(order_details.quantity), 0) AS total 
                 FROM products
                 LEFT JOIN orders ON orders.product=products.name AND orders.created >= DATE(NOW()) - INTERVAL 7 DAY 
                 GROUP BY products.id, products.name, products.price
                 HAVING total = (
-                    SELECT COALESCE(SUM(orders.quantity), 0) AS lowest_total
+                    SELECT COALESCE(SUM(order_details.quantity), 0) AS lowest_total
                     FROM products
                     LEFT JOIN orders ON orders.product=products.name AND orders.created >= DATE(NOW()) - INTERVAL 7 DAY 
                     GROUP BY products.id, products.name, products.price

@@ -20,7 +20,7 @@
         function out_of_stock_product($con)
         {
             // fetch products with lowest quantity
-            $query = "SELECT products.id, products.name, products.price, SUM(orders.quantity) AS total
+            $query = "SELECT products.id, products.name, products.price, SUM(order_details.quantity) AS total
             FROM products
             LEFT JOIN orders ON orders.product=products.name AND orders.created >= DATE(NOW()) - INTERVAL 7 DAY 
             GROUP BY products.id, products.name, products.price

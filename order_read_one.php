@@ -43,7 +43,12 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT id, customer_name, product, quantity, created FROM orders WHERE id = ? LIMIT 0,1";
+            $query = "SELECT o.id, o.customer_name, p.name, od.quantity, o.created 
+        FROM orders o
+        JOIN customers c ON o.customer_name = c.username
+        JOIN order_details od ON o.id = od.order_id
+        JOIN products p ON od.product_id = p.id
+        WHERE o.id = ? LIMIT 0,11";
             $stmt = $con->prepare($query);
 
             // this is the first question mark
@@ -52,15 +57,39 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             // execute our query
             $stmt->execute();
 
-            // store retrieved row to a variable
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            // check if any rows are returned
+            if ($stmt->rowCount() > 0) {
 
-            // values to fill up our form
-            $id = $row['id'];
-            $customer_name = $row['customer_name'];
-            $product = $row['product'];
-            $quantity = $row['quantity'];
-            $created = $row['created'];
+                // display table header
+                echo "<table class='table table-hover table-responsive table-bordered'>";
+                echo "<tr>";
+                echo "<td><strong>Product</strong></td>";
+                echo "<td><strong>Quantity</strong></td>";
+                echo "<td><strong>Order Date</strong></td>";
+                echo "</tr>";
+
+                $row_number = 0;
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    // extract row
+                    // this will make $row['firstname'] to just $firstname only
+                    extract($row);
+
+                    // set font weight based on row number
+                    $font_weight = ($row_number % 2 == 0) ? 'lighter' : 'bold';
+
+                    echo "<tr style='font-weight: {$font_weight}'>";
+                    echo "<td>" . htmlspecialchars($row['name'], ENT_QUOTES) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['quantity'], ENT_QUOTES) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['created'], ENT_QUOTES) . "</td>";
+                    echo "</tr>";
+                    // increment row number
+                    $row_number++;
+                }
+                echo "</table>";
+            } else {
+                // no rows returned for the given order_id
+                echo "No orders found.";
+            }
         }
 
         // show error
@@ -70,68 +99,12 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         ?>
 
 
-
-        <!-- HTML read one record table will be here -->
-        <!--we have our html table here where the record will be displayed-->
-        <table class='table table-hover table-responsive table-bordered'>
-            <tr>
-                <td>Id</td>
-                <td><?php echo htmlspecialchars($id, ENT_QUOTES);  ?></td>
-            </tr>
-
-            <tr>
-                <td>Username</td>
-                <td><?php echo htmlspecialchars($customer_name, ENT_QUOTES);  ?></td>
-            </tr>
-
-            <tr>
-                <td>Product</td>
-                <td>
-                    <?php
-                    if (!empty($product)) {
-                        echo htmlspecialchars($product, ENT_QUOTES);
-                    } else {
-                        echo "-";
-                    }
-                    ?>
-                </td>
-                </td>
-            </tr>
-
-            <tr>
-                <td>Quantity</td>
-                <td>
-                    <?php
-                    if (!empty($quantity)) {
-                        echo htmlspecialchars($quantity, ENT_QUOTES);
-                    } else {
-                        echo "-";
-                    }
-                    ?>
-                </td>
-                </td>
-            </tr>
-
-            <tr>
-                <td>Order Date</td>
-                <td>
-                    <?php
-                    if (!empty($created)) {
-                        echo htmlspecialchars($created, ENT_QUOTES);
-                    } else {
-                        echo "-";
-                    }
-                    ?>
-                </td>
-                </td>
-            </tr>
-
-            <tr>
-                <td></td>
-                <td>
-                    <a href='order_read.php' class='btn btn-danger'>Back to read orders</a>
-                </td>
-            </tr>
+        <tr>
+            <td></td>
+            <td>
+                <a href='order_read.php' class='btn btn-danger'>Back to read orders</a>
+            </td>
+        </tr>
         </table>
 
 

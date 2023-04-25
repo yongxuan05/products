@@ -19,9 +19,10 @@
         function get_top_selling_product($con)
         {
             // fetch top selling product
-            $query = "SELECT products.id, products.name, products.price, SUM(orders.quantity) AS total 
-            FROM orders 
-            JOIN products ON orders.product=products.name
+            $query = "SELECT products.id, products.name, products.price, SUM(order_details.quantity) AS total 
+            FROM order_details 
+            JOIN products ON order_details.product_id = products.id
+            JOIN orders ON orders.id = order_details.order_id
             WHERE orders.created >= DATE(NOW()) - INTERVAL 7 DAY 
             GROUP BY products.id, products.name, products.price
             ORDER BY total DESC 

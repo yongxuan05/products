@@ -57,7 +57,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         //search
         if ($_POST) {
             $search = htmlspecialchars(strip_tags($_POST['find']));
-            $query = "SELECT * FROM `orders` WHERE customer_name LIKE '%" . $search . "%' ";
+            $query = "SELECT customer_name, id FROM `orders` WHERE customer_name LIKE '%" . $search . "%' OR id LIKE '%" . $search . "%'";
         }
 
         // get total number of orders
@@ -90,7 +90,6 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             echo "<tr>";
             echo "<th>ID</th>";
             echo "<th>Username</th>";
-            echo "<th>Product </th>";
             echo "<th>Action</th>";
             echo "</tr>";
 
@@ -107,7 +106,6 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 echo "<tr style='font-weight: {$font_weight}'>";
                 echo "<td style='width: 5%'>{$id}</td>";
                 echo "<td style='width: 10%'>{$customer_name}</td>";
-                echo "<td style='width: 10%'>" . (($product && $product != '0') ? $product : '-') . "</td>"; // display dash if no product
                 echo "<td style='width: 10%'>";
 
                 // read one record
