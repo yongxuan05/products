@@ -41,24 +41,28 @@
     ?>
 
     <div class="container" style="margin-top: 20px;">
-        <h2>Latest Product</h2>
-        <div class="row">
-            <?php if (isset($product)) : ?>
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <div class="card-body" style="color: white;">
-                            <h5 class="card-title"><?php echo $product['name']; ?></h5>
-                            <p class="card-text"><?php echo $product['description']; ?></p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <a href="product_read_one.php?id=<?php echo $product['id']; ?>" class="btn btn-sm btn-outline-secondary" style="color: white;">View</a>
+        <div class="card" style="border-width: 3px; border-color:#496058;">
+            <div class="card-header" style="color: white;">
+                <h2>Latest Product</h2>
+            </div>
+            <div class="card-body" style="background-color: white">
+                <div class="row">
+                    <?php if (isset($product)) : ?>
+                        <div class="col-md-4">
+                            <div class="card-body">
+                                <h3 class="card-title" style="font-weight: bold; margin:0;"><?php echo ucfirst($product['name']); ?></h3>
+                                <p class="card-text"><?php echo $product['description']; ?></p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text">RM<?php echo $product['price']; ?></small>
+                                    <div class="btn-group">
+                                        <a href="product_read_one.php?id=<?php echo $product['id']; ?>" class="btn btn-sm btn-outline-secondary" style="font-weight: bold; border-color:#496058;">View</a>
+                                    </div>
                                 </div>
-                                <small class="text" style="color: white;">RM<?php echo $product['price']; ?></small>
                             </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
                 </div>
-            <?php endif; ?>
+            </div>
         </div>
     </div>
 

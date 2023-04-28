@@ -21,11 +21,22 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 </head>
 
 <body>
+
     <?php include 'nav.php' ?>
-    <?php include 'latest_product.php' ?>
-    <?php include 'top_selling.php' ?>
-    <?php include 'lowest_selling.php' ?>
-    <?php include 'out_of_stock.php' ?>
+    <div class="container" style="margin-top: 50px; margin-bottom: 100px;">
+        <div class="container" style="margin-bottom: 50px;">
+            <?php include 'latest_product.php' ?>
+        </div>
+        <div class="container" style="margin-bottom: 50px;">
+            <?php include 'top_selling.php' ?>
+        </div>
+        <div class="container" style="margin-bottom: 50px;">
+            <?php include 'lowest_selling.php' ?>
+        </div>
+        <div class="container" style="margin-bottom: 50px;">
+            <?php include 'out_of_stock.php' ?>
+        </div>
+    </div>
 </body>
 
 </html>
