@@ -40,71 +40,62 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             try {
                 // Sanitize and validate input fields
                 $customer_name = htmlspecialchars(strip_tags($_POST['customer_name']));
-                $product1 = htmlspecialchars(strip_tags($_POST['product1']));
-                $product2 = htmlspecialchars(strip_tags($_POST['product2']));
-                $product3 = htmlspecialchars(strip_tags($_POST['product3']));
-                $quantity1 = htmlspecialchars(strip_tags($_POST['quantity1']));
-                $quantity2 = htmlspecialchars(strip_tags($_POST['quantity2']));
-                $quantity3 = htmlspecialchars(strip_tags($_POST['quantity3']));
+                $products = isset($_POST['product']) ? $_POST['product'] : array();
+                $quantities = isset($_POST['quantity']) ? $_POST['quantity'] : array();
 
-                // Begin transaction
-                $con->beginTransaction();
-
-                // Insert data into orders table
-                $query = "INSERT INTO orders SET customer_name=:customer_name, created=:created";
-                $stmt = $con->prepare($query);
-                $created = date('Y-m-d H:i:s');
-                $stmt->bindParam(':customer_name', $customer_name);
-                $stmt->bindParam(':created', $created);
-                $stmt->execute();
-
-                $order_id = $con->lastInsertId();
-
-                // Insert data into order_details table
-                $query2 = "INSERT INTO order_details SET order_id=:order_id, product_id=:product_id, quantity=:quantity";
-                $stmt2 = $con->prepare($query2);
-
-                // Insert data into order_details table for product1
-                if (!empty($product1)) {
-                    $stmt2->bindParam(':order_id', $order_id);
-                    $stmt2->bindParam(':product_id', $product1);
-                    $stmt2->bindParam(':quantity', $quantity1);
-                    $stmt2->execute();
+                // check if any field is empty
+                if (empty($customer_name)) {
+                    $customer_name_error = "Please select username";
+                }
+                if (empty($products)) {
+                    $products_error = "Please select product";
+                }
+                if (empty($quantities)) {
+                    $quantity_error = "Please enter quantity";
                 }
 
-                // Insert data into order_details table for product2
-                if (!empty($product2)) {
+                // check if there are any errors
+                if (!isset($customer_name_error) && !isset($products_error) && !isset($quantity_error)) {
 
-                    $stmt2->bindParam(':order_id', $order_id);
-                    $stmt2->bindParam(':product_id', $product2);
-                    $stmt2->bindParam(':quantity', $quantity2);
-                    $stmt2->execute();
-                }
+                    // Begin transaction
+                    $con->beginTransaction();
 
-                // Insert data into order_details table for product3
-                if (!empty($product3)) {
+                    // Insert data into orders table
+                    $query = "INSERT INTO orders SET customer_name=:customer_name, created=:created";
+                    $stmt = $con->prepare($query);
+                    $created = date('Y-m-d H:i:s');
+                    $stmt->bindParam(':customer_name', $customer_name);
+                    $stmt->bindParam(':created', $created);
 
-                    $stmt2->bindParam(':order_id', $order_id);
-                    $stmt2->bindParam(':product_id', $product3);
-                    $stmt2->bindParam(':quantity', $quantity3);
-                    $stmt2->execute();
-                }
+                    // Execute the query
+                    if ($stmt->execute()) {
+                        $order_id = $con->lastInsertId();
 
-                // Commit transaction
-                $con->commit();
+                        // Prepare the query to insert data into order_details table
+                        $query2 = "INSERT INTO order_details SET order_id=:order_id, product_id=:product_id, quantity=:quantity";
+                        $stmt2 = $con->prepare($query2);
 
-                // Execute the query
-                if ($stmt->execute()) {
-                    echo "<div class='alert alert-success'>Record was saved.</div>";
-                    $customer_name = "";
-                    $product1 = "";
-                    $product2 = "";
-                    $product3 = "";
-                    $quantity1 = "";
-                    $quantity2 = "";
-                    $quantity3 = "";
-                } else {
-                    echo "<div class='alert alert-danger'>Unable to save record. Please fill in all required fields.</div>";
+                        // Insert data into order_details table for each product
+                        for ($i = 0; $i < count($products); $i++) {
+                            $product_id = htmlspecialchars(strip_tags($products[$i]));
+                            $quantity = htmlspecialchars(strip_tags($quantities[$i]));
+
+                            $stmt2->bindParam(':order_id', $order_id);
+                            $stmt2->bindParam(':product_id', $product_id);
+                            $stmt2->bindParam(':quantity', $quantity);
+                            $stmt2->execute();
+                        }
+
+                        // Commit the transaction
+                        $con->commit();
+
+                        echo "<div class='alert alert-success'>Record was saved.</div>";
+                        $customer_name = "";
+                        $products = array();
+                        $quantities = array();
+                    } else {
+                        echo "<div class='alert alert-danger'>Unable to save record. Please fill in all required fields.</div>";
+                    }
                 }
             }
 
@@ -152,87 +143,44 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 </tr>
 
                 <tr>
-                    <td style="font-weight: bold;">Products 1</td>
+                    <td style="font-weight: bold;">Product</td>
                     <td>
-                        <select name="product1" class="form-control">
-                            <option value="">-- Select Products --</option>
-                            <?php
-                            // include database connection
-                            include 'config/database.php';
-                            // fetch categories from the database
-                            $query = "SELECT id, name FROM products ORDER BY name";
-                            $stmt = $con->prepare($query);
-                            $stmt->execute();
-                            $product1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                            // dynamically populate the dropdown list with categories
-                            foreach ($product1 as $product1) {
-                                $selected = isset($product1) && $product1 == $product1['name'] ? 'selected' : '';
-                                echo "<option value='{$product1['id']}' {$selected}>{$product1['name']}</option>";
-                            }
-                            ?>
-                        </select>
-                        <?php if (isset($product1_error)) : ?>
-                            <span class="text-danger"><?php echo $product1_error; ?></span>
-                        <?php endif; ?>
+                        <div id="product-list">
+                            <div class="form-group product-item">
+                                <select name="product[]" class="form-control">
+                                    <option value="">-- Select Products --</option>
+                                    <?php
+                                    // include database connection
+                                    include 'config/database.php';
+                                    // fetch products from the database
+                                    $query = "SELECT id, name FROM products ORDER BY name";
+                                    $stmt = $con->prepare($query);
+                                    $stmt->execute();
+                                    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                    // dynamically populate the dropdown list with products
+                                    foreach ($products as $p) {
+                                        $selected = isset($_POST['product']) && in_array($p['id'], $_POST['product']) ? 'selected' : '';
+                                        echo "<option value='{$p['id']}' {$selected}>{$p['name']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                                <?php if (isset($products_error)) : ?>
+                                    <div class="error-message">
+                                        <span class="text-danger"><?php echo $products_error; ?></span>
+                                    </div>
+                                <?php endif; ?>
 
+                                <label>Quantity</label>
+                                <input type="number" name="quantity[]" class="form-control" value="<?php echo isset($quantity) ? htmlspecialchars($quantity) : ''; ?>" />
+                                <?php if (isset($quantity_error)) { ?>
+                                    <div class="error-message">
+                                        <span class="text-danger"><?php echo $quantity_error; ?></span>
+                                    </div>
+                                <?php } ?>
 
-                    <td style="font-weight: bold;">Quantity</td>
-                    <td><input type="number" name="quantity1" class="form-control" value="<?php echo isset($quantity1) ? htmlspecialchars($quantity1) : ''; ?>" />
-                        <?php if (isset($quantity1_error)) { ?><span class="text-danger"><?php echo $quantity1_error; ?></span><?php } ?></td>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td style="font-weight: bold;">Products 2</td>
-                    <td>
-                        <select name="product2" class="form-control">
-                            <option value="">-- Select Products --</option>
-                            <?php
-                            // include database connection
-                            include 'config/database.php';
-                            // fetch categories from the database
-                            $query = "SELECT id, name FROM products ORDER BY name";
-                            $stmt = $con->prepare($query);
-                            $stmt->execute();
-                            $product2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                            // dynamically populate the dropdown list with categories
-                            foreach ($product2 as $product2) {
-                                $selected = isset($product2) && $product2 == $product2['name'] ? 'selected' : '';
-                                echo "<option value='{$product2['id']}' {$selected}>{$product2['name']}</option>";
-                            }
-                            ?>
-                        </select>
-
-                    <td style="font-weight: bold;">Quantity</td>
-                    <td><input type="number" name="quantity2" class="form-control" value="<?php echo isset($quantity2) ? htmlspecialchars($quantity2) : ''; ?>" />
-                        <?php if (isset($quantity2_error)) { ?><span class="text-danger"><?php echo $quantity2_error; ?></span><?php } ?></td>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td style="font-weight: bold;">Products 3</td>
-                    <td>
-                        <select name="product3" class="form-control">
-                            <option value="">-- Select Products --</option>
-                            <?php
-                            // include database connection
-                            include 'config/database.php';
-                            // fetch categories from the database
-                            $query = "SELECT id, name FROM products ORDER BY name";
-                            $stmt = $con->prepare($query);
-                            $stmt->execute();
-                            $product3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                            // dynamically populate the dropdown list with categories
-                            foreach ($product3 as $product3) {
-                                $selected = isset($product3) && $product3 == $product3['name'] ? 'selected' : '';
-                                echo "<option value='{$product3['id']}' {$selected}>{$product3['name']}</option>";
-                            }
-                            ?>
-                        </select>
-
-                    <td style="font-weight: bold;">Quantity</td>
-                    <td><input type="number" name="quantity3" class="form-control" value="<?php echo isset($quantity3) ? htmlspecialchars($quantity3) : ''; ?>" />
-                        <?php if (isset($quantity3_error)) { ?><span class="text-danger"><?php echo $quantity3_error; ?></span><?php } ?></td>
+                                <button type="button" class="btn btn-primary add-product-btn">Add Product</button>
+                            </div>
+                        </div>
                     </td>
                 </tr>
 
@@ -243,6 +191,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                         <a href='index.php' class='btn btn-danger'>Back to read products</a>
                     </td>
                 </tr>
+
             </table>
         </form>
 
