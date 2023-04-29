@@ -39,7 +39,7 @@
     ?>
 
     <div class="container" style="margin-top: 20px;">
-        <div class="card" style="border-width: 3px; border-color:#496058;">
+        <div class="card" style="border-width: 3px; border-color:#496058; background-color: #496058;">
             <div class="card-header" style="color: white;">
                 <h2>Out of Stock Product</h2>
             </div>
@@ -52,7 +52,9 @@
                                 <h3 class="card-title" style="font-weight: bold; margin:0;"><?php echo ucfirst($product['name']); ?></h3>
                                 <?php if ($product['total'] > 100) : ?>
                                     <p class="card-text" style="margin:0;"><?php echo $product['total']; ?> units sold</p>
-                                    <p class="card-text" style="margin-bottom: px;">Out of stock</p>
+                                    <div class='btn disabled btn-danger'>
+                                        <p class="card-text" style="margin-bottom: 0;">Out of stock</p>
+                                    </div>
                                 <?php endif; ?>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <small class="text">RM<?php echo $product['price']; ?></small>

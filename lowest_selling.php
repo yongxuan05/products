@@ -47,7 +47,7 @@
     ?>
 
     <div class="container" style="margin-top: 20px;">
-        <div class="card" style="border-width: 3px; border-color:#496058;">
+        <div class="card" style="border-width: 3px; border-color:#496058; background-color: #496058;">
             <div class="card-header" style="color: white;">
                 <h2>Lowest Quantity Product</h2>
             </div>

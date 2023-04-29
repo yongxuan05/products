@@ -171,3 +171,8 @@ body {
 textarea {
     height: auto !important;
 }
+
+.btn.disabled:hover {
+    cursor: not-allowed;
+    cursor: pointer;
+}
