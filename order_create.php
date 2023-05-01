@@ -178,42 +178,6 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                                     </div>
                                 <?php } ?>
 
-                <tr>
-                    <td style="font-weight: bold;">Product</td>
-                    <td>
-                        <div id="product-list">
-                            <div class="form-group product-item">
-                                <select name="product[]" class="form-control">
-                                    <option value="">-- Select Products --</option>
-                                    <?php
-                                    // include database connection
-                                    include 'config/database.php';
-                                    // fetch products from the database
-                                    $query = "SELECT id, name FROM products ORDER BY name";
-                                    $stmt = $con->prepare($query);
-                                    $stmt->execute();
-                                    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                    // dynamically populate the dropdown list with products
-                                    foreach ($products as $p) {
-                                        $selected = isset($_POST['product']) && in_array($p['id'], $_POST['product']) ? 'selected' : '';
-                                        echo "<option value='{$p['id']}' {$selected}>{$p['name']}</option>";
-                                    }
-                                    ?>
-                                </select>
-                                <?php if (isset($products_error)) : ?>
-                                    <div class="error-message">
-                                        <span class="text-danger"><?php echo $products_error; ?></span>
-                                    </div>
-                                <?php endif; ?>
-
-                                <label>Quantity</label>
-                                <input type="number" name="quantity[]" class="form-control" value="<?php echo isset($quantity) ? htmlspecialchars($quantity) : ''; ?>" />
-                                <?php if (isset($quantity_error)) { ?>
-                                    <div class="error-message">
-                                        <span class="text-danger"><?php echo $quantity_error; ?></span>
-                                    </div>
-                                <?php } ?>
-
                                 <button type="button" class="btn btn-primary add-product-btn">Add Product</button>
                             </div>
                         </div>
