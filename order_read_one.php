@@ -48,7 +48,8 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             JOIN customers c ON o.customer_name = c.username
             JOIN order_details od ON o.id = od.order_id
             JOIN products p ON od.product_id = p.id
-            WHERE o.id = ? LIMIT 0,11";
+            WHERE o.id = ? 
+            LIMIT 0,11";
 
             $stmt = $con->prepare($query);
 
