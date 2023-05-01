@@ -65,7 +65,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
 
         // select all data
-        $query = "SELECT * FROM category";
+        $query = "SELECT * FROM category ORDER BY id ASC";
         $stmt = $con->prepare($query);
         $stmt->execute();
 

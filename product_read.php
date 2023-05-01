@@ -50,7 +50,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         include 'config/database.php';
 
         // select all data
-        $query = "SELECT * FROM products";
+        $query = "SELECT * FROM products ORDER BY id ASC";
 
         //search bar
         if ($_POST) {

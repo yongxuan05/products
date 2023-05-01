@@ -52,7 +52,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         // delete message prompt will be here
 
         // select all data
-        $query = "SELECT * FROM orders";
+        $query = "SELECT * FROM orders ORDER BY id ASC";
 
         //search
         if ($_POST) {

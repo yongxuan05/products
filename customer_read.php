@@ -51,7 +51,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
 
         // select all data
-        $query = "SELECT * FROM customers";
+        $query = "SELECT * FROM customers ORDER BY id ASC";
 
         //search
         if ($_POST) {
