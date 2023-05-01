@@ -25,7 +25,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
     <?php include 'nav.php' ?>
 
     <!-- container -->
-    <div class="container">
+    <div class="container" style="margin-top: 90px;">
         <div class="cp-page-header">
             <h1>Add Customer</h1>
         </div>

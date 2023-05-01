@@ -28,7 +28,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
     <!-- container -->
     <div class="container">
-        <div class="page-header">
+        <div class="page-header" style="margin-top: 90px;">
             <h1>Categories</h1>
         </div>
 

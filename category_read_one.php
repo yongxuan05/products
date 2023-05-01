@@ -58,7 +58,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
     $catname = $category_row['catname'];
 
     // display the header with the category name
-    echo "<div class='container'>";
+    echo "<div class='container' style='margin-top: 90px'>";
     echo "<div class='page-header'>";
 
     //let the first letter to capital

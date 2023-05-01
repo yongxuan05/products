@@ -26,7 +26,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
 
     <!-- container -->
-    <div class="container">
+    <div class="container" style="margin-top: 90px;">
         <div class="page-header">
             <h1>Details</h1>
         </div>
@@ -88,7 +88,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
             <tr>
                 <td>Description</td>
-                <td><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></td>
+                <td><?php echo htmlspecialchars($description, ENT_QUOTES); ?></td>
             </tr>
 
             <tr>

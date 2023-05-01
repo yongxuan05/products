@@ -1,7 +1,7 @@
 <?php $currentPage = basename($_SERVER['PHP_SELF'], '.php'); ?>
 
 <!-- navbar -->
-<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="navigation bar">
+<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark fixed-top" arial-label="navigation bar">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.php">yx<span>.</span></a>
 
