@@ -47,10 +47,10 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 if (empty($customer_name)) {
                     $customer_name_error = "Please select username";
                 }
-                if (empty($products)) {
+                if (empty($product)) {
                     $products_error = "Please select product";
                 }
-                if (empty($quantities)) {
+                if (empty($quantity)) {
                     $quantity_error = "Please enter quantity";
                 }
 
