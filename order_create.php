@@ -44,21 +44,20 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 $quantities = isset($_POST['quantity']) ? $_POST['quantity'] : array();
 
                 // check if any field is empty
+
                 if (empty($customer_name)) {
                     $customer_name_error = "Please select username";
                 }
-                if (empty($product)) {
-                    $products_error = "Please select product";
+
+                if (empty($products)) {
+                    $products_error = "Ple ase select product";
                 }
-                if (empty($quantity)) {
+                if (empty($quantities)) {
                     $quantity_error = "Please enter quantity";
                 }
 
                 // check if there are any errors
                 if (!isset($customer_name_error) && !isset($products_error) && !isset($quantity_error)) {
-
-                    // Begin transaction
-                    $con->beginTransaction();
 
                     // Insert data into orders table
                     $query = "INSERT INTO orders SET customer_name=:customer_name, created=:created";
@@ -86,8 +85,6 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                             $stmt2->execute();
                         }
 
-                        // Commit the transaction
-                        $con->commit();
 
                         echo "<div class='alert alert-success'>Record was saved.</div>";
                         $customer_name = "";
@@ -145,7 +142,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 <tr>
                     <td style="font-weight: bold;">Product</td>
                     <td>
-                        <div id="product-list">
+                        <div class="product-list">
                             <div class="form-group product-item">
                                 <select name="product[]" class="form-control">
                                     <option value="">-- Select Products --</option>
@@ -178,7 +175,6 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                                     </div>
                                 <?php } ?>
 
-                                <button type="button" class="btn btn-primary add-product-btn">Add Product</button>
                             </div>
                         </div>
                     </td>
@@ -187,6 +183,8 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 <tr>
                     <td></td>
                     <td>
+                        <input type="button" value="Add More" class="add_one btn btn-warning" />
+                        <input type="button" value="Delete" class="delete_one btn btn-danger" />
                         <input type='submit' value='Save' class='btn btn-primary' />
                         <a href='order_read.php' class='btn btn-danger'>Back to read orders</a>
                     </td>
@@ -198,6 +196,24 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
     </div>
     <!-- end .container -->
+
+    <script>
+        document.addEventListener('click', function(event) {
+            if (event.target.matches('.add_one')) {
+                var element = document.querySelector('.product-list');
+                var clone = element.cloneNode(true);
+                element.after(clone);
+            }
+            if (event.target.matches('.delete_one')) {
+                var total = document.querySelectorAll('.product-list').length;
+                if (total > 1) {
+                    var element = document.querySelector('.product-list');
+                    element.remove(element);
+                }
+            }
+        }, false);
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>
 
