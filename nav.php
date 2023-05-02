@@ -3,7 +3,7 @@
 <!-- navbar -->
 <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark fixed-top" arial-label="navigation bar">
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.php">yx<span>.</span></a>
+        <a class="navbar-brand" href="index.php">yx<span>.team</span></a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

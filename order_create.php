@@ -56,8 +56,13 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                     $quantity_error = "Please enter quantity";
                 }
 
+
+
                 // check if there are any errors
                 if (!isset($customer_name_error) && !isset($products_error) && !isset($quantity_error)) {
+
+                    // Begin transaction
+                    $con->beginTransaction();
 
                     // Insert data into orders table
                     $query = "INSERT INTO orders SET customer_name=:customer_name, created=:created";
@@ -85,6 +90,8 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                             $stmt2->execute();
                         }
 
+                        // Commit the transaction
+                        $con->commit();
 
                         echo "<div class='alert alert-success'>Record was saved.</div>";
                         $customer_name = "";
@@ -168,7 +175,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                                 <?php endif; ?>
 
                                 <label>Quantity</label>
-                                <input type="number" name="quantity[]" class="form-control" value="<?php echo isset($quantity) ? htmlspecialchars($quantity) : ''; ?>" />
+                                <input type="number" name="quantity" class="form-control" value="<?php echo isset($quantity) ? htmlspecialchars($quantity) : ''; ?>" />
                                 <?php if (isset($quantity_error)) { ?>
                                     <div class="error-message">
                                         <span class="text-danger"><?php echo $quantity_error; ?></span>
@@ -177,14 +184,17 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
                             </div>
                         </div>
+
+                        <div class=button style="float: right; display: block;">
+                            <input type="button" value="+" class="add_one btn" style="background-color: #496058; color:white" />
+                            <input type="button" value="-" class="delete_one btn " style="background-color: #496058; color:white" />
+                        </div>
                     </td>
                 </tr>
 
                 <tr>
                     <td></td>
                     <td>
-                        <input type="button" value="Add More" class="add_one btn btn-warning" />
-                        <input type="button" value="Delete" class="delete_one btn btn-danger" />
                         <input type='submit' value='Save' class='btn btn-primary' />
                         <a href='order_read.php' class='btn btn-danger'>Back to read orders</a>
                     </td>
@@ -214,7 +224,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         }, false);
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>
 
 </html>
