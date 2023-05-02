@@ -11,7 +11,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 <html>
 
 <head>
-    <title>Add Order</title>
+    <title>Update</title>
     <meta charset="utf-8">
     <!-- Latest compiled and minified Bootstrap CSS (Apply your Bootstrap here -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
