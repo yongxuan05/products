@@ -92,8 +92,8 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                     echo "<tr style='font-weight: {$font_weight}'>";
                     echo "<td>" . htmlspecialchars($name, ENT_QUOTES) . "</td>";
                     echo "<td>" . htmlspecialchars($quantity, ENT_QUOTES) . "</td>";
-                    echo "<td>" . htmlspecialchars($price, ENT_QUOTES) . "</td>";
-                    echo "<td>" . htmlspecialchars($total_price_row, ENT_QUOTES) . "</td>";
+                    echo "<td style='text-align:right'>" .  "RM " . htmlspecialchars(number_format($price, 2), ENT_QUOTES) . "</td>";
+                    echo "<td style='text-align:right'>" .  "RM " . htmlspecialchars(number_format($total_price_row, 2), ENT_QUOTES) . "</td>";
                     echo "<td>" . htmlspecialchars($created, ENT_QUOTES) . "</td>";
                     echo "</tr>";
 
