@@ -49,13 +49,12 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                     $customer_name_error = "Please select username";
                 }
 
-                if (empty($products)) {
-                    $products_error = "Ple ase select product";
+                if (empty($product)) {
+                    $products_error = "Please select product";
                 }
                 if (empty($quantities)) {
                     $quantity_error = "Please enter quantity";
                 }
-
 
 
                 // check if there are any errors
