@@ -27,7 +27,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
     <!-- container -->
     <div class="container" style="margin-top: 90px;">
         <div class="page-header">
-            <h1>Update Product</h1>
+            <h1>Update Customer</h1>
         </div>
         <!-- PHP read record by ID will be here -->
         <?php
@@ -242,7 +242,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                     <td></td>
                     <td>
                         <input type='submit' value='Save Changes' class='btn btn-primary' />
-                        <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
+                        <a href='customer_read.php' class='btn btn-danger'>Back to read customers</a>
                     </td>
                 </tr>
             </table>
