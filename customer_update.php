@@ -56,8 +56,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
             // values to fill up our form
             $username = $row['username'];
-            $Password = $row['Password'];
-            $CPassword = $row['CPassword'];
+            $old_password = $row['Password'];
             $fname = $row['fname'];
             $lname = $row['lname'];
             $gender = $row['gender'];
@@ -80,15 +79,16 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 // write update query
                 // in this case, it seemed like we have so many fields to pass and
                 // it is better to label them and not use question marks
-                $query = "UPDATE customers SET username=:username, Password=:Password, fname=:fname, lname=:lname, gender=:gender, dob=:dob, register=:register, 'status'=:'status' WHERE id = :id";
+                $query = "UPDATE customers SET username=:username, Password=:new_password, fname=:fname, lname=:lname, gender=:gender, dob=:dob, `status`=:status WHERE id = :id";
 
                 // prepare query for excecution
                 $stmt = $con->prepare($query);
 
                 // posted values
                 $username = htmlspecialchars(strip_tags($_POST['username']));
-                $Password = $_POST['Password'];
-                $CPassword = $_POST['CPassword'];
+                $Password = htmlspecialchars(strip_tags($_POST['Password']));
+                $new_password = $_POST['new_password'];
+                $confirm_new_password = $_POST['confirm_new_password'];
                 $fname = htmlspecialchars(strip_tags($_POST['fname']));
                 $lname = htmlspecialchars(strip_tags($_POST['lname']));
                 if (isset($_POST['gender'])) $gender = ($_POST['gender']);
@@ -96,31 +96,83 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 $dob = htmlspecialchars(strip_tags($_POST['dob']));
                 if (isset($_POST['status'])) $status = ($_POST['status']);
 
-                // bind the parameters
-                $stmt->bindParam(':username', $username);
-                $stmt->bindParam(':Password', $Password);
-                $stmt->bindParam(':fname', $fname);
-                $stmt->bindParam(':lname', $lname);
-                $stmt->bindParam(':gender', $gender);
-                $stmt->bindParam(':dob', $dob);
-                $stmt->bindParam(':status', $status);
 
-                // Execute the query
-                if ($stmt->execute()) {
-                    echo "<div class='alert alert-success'>Record was updated.</div>";
+                $alphabet = preg_match('/[a-zA-Z]/', $new_password);
+                $u_alphabet = preg_match('/[a-zA-Z]/', $username);
+                $number = preg_match('/[0-9]/', $new_password);
+                $u_number = preg_match('/[0-9]/', $username);
+
+                // check if any field is empty
+                if (strlen($username) < 6) {
+                    $username_error = "Username must be at least 6 characters";
+                } elseif (!$u_alphabet) {
+                    $username_error = "Username with alphabet only";
+                } elseif ($u_number) {
+                    $username_error = "Username  no number";
+                }
+                // check if oldpassword is same as password
+                if ($Password != $_POST['Password']) {
+                    $Opassword_error = "Old Password is incorrect";
+                }
+                // check if newpassword is same as confirm new password
+                if (!empty($Password) && empty($new_password)) {
+                    $Password_error = "Please enter New Password";
+                }
+                if (strlen($new_password) < 8) {
+                    $Password_error = "Password should be at least 8 characters in length";
+                } elseif (!$alphabet) {
+                    $Password_error = "Password must contain at least one letter";
+                } elseif (!$number) {
+                    $Password_error = "Password must contain at least one number";
+                } elseif ($new_password != $confirm_new_password) {
+                    $CPassword_error = "Confirm New Password must same with New Password";
                 } else {
-                    echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                    $new_password = md5($new_password);
+                }
+
+                // check if there are any errors
+                if (!isset($username_error) && !isset($Password_error) && !isset($CPassword_error)) {
+
+                    // prepare query for execution
+                    $stmt = $con->prepare($query);
+
+                    // bind the parameters
+                    $stmt->bindParam(':username', $username);
+                    $stmt->bindParam(':new_password', $new_password);
+                    $stmt->bindParam(':fname', $fname);
+                    $stmt->bindParam(':lname', $lname);
+                    $stmt->bindParam(':gender', $gender);
+                    $stmt->bindParam(':dob', $dob);
+                    $stmt->bindParam(':status', $status);
+                    $stmt->bindParam(':id', $id);
+
+                    // Execute the query
+                    if ($stmt->execute()) {
+                        echo "<div class='alert alert-success'>Record was saved.</div>";
+                        $username = "";
+                        $Password = "";
+                        $new_password = "";
+                        $confirm_new_password = "";
+                        $fname = "";
+                        $lname = "";
+                        $gender = "";
+                        $dob = "";
+                        $status = "";
+                    } else {
+                        echo "<div class='alert alert-danger'>Unable to save record. Please fill in all required fields.</div>";
+                    }
                 }
             }
             // show errors
             catch (PDOException $exception) {
                 die('ERROR: ' . $exception->getMessage());
             }
-        } ?>
+        }
+        ?>
 
 
         <!--we have our html form here where new record information can be updated-->
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post">
             <table class='table table-hover table-responsive table-bordered'>
 
                 <tr>
@@ -142,14 +194,21 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 </tr>
 
                 <tr>
-                    <td style="font-weight: bold;">Password</td>
-                    <td><input type="password" name='Password' class="form-control" value="<?php echo isset($Password) ? htmlspecialchars($Password) : ''; ?>" />
+                    <td style="font-weight: bold;">Old Password</td>
+                    <td><input type="password" name="Password" class="form-control" value="<?php echo isset($Password) ? htmlspecialchars($Password) : ''; ?>" />
+                        <?php if (isset($Opassword_error)) { ?><span class="text-danger"><?php echo $Opassword_error; ?></span><?php } ?>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight: bold;">New Password</td>
+                    <td><input type="password" name="new_password" class="form-control" value="<?php echo isset($new_password) ? htmlspecialchars($new_password) : ''; ?>" />
                         <?php if (isset($Password_error)) { ?><span class="text-danger"><?php echo $Password_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td style="font-weight: bold;">Confirm Password</td>
-                    <td><input type="password" name='CPassword' class="form-control" value="<?php echo isset($CPassword) ? htmlspecialchars($Password) : ''; ?>" />
+                    <td style="font-weight: bold;">Confirm New Password</td>
+                    <td><input type="password" name="confirm_new_password" class="form-control" value="<?php echo isset($confirm_new_password) ? htmlspecialchars($confirm_new_password) : ''; ?>" />
                         <?php if (isset($CPassword_error)) { ?><span class="text-danger"><?php echo $CPassword_error; ?></span><?php } ?></td>
                 </tr>
 
