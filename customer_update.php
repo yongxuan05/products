@@ -78,13 +78,13 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 // write update query
                 // in this case, it seemed like we have so many fields to pass and
                 // it is better to label them and not use question marks
-                $query = "UPDATE customers SET 'Password'=:new_password, fname=:fname, lname=:lname, gender=:gender, dob=:dob, `status`=:status WHERE id = :id";
+                $query = "UPDATE customers SET `Password`=:new_password, fname=:fname, lname=:lname, gender=:gender, dob=:dob, `status`=:status WHERE id = :id";
 
                 // prepare query for excecution
                 $stmt = $con->prepare($query);
 
                 // posted values
-                $Password = htmlspecialchars(strip_tags($_POST['Password']));
+                $Password = $_POST['Password'];
                 $new_password = $_POST['new_password'];
                 $confirm_new_password = $_POST['confirm_new_password'];
                 $fname = htmlspecialchars(strip_tags($_POST['fname']));
@@ -119,9 +119,10 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 }
 
                 // check if oldpassword is same as $Password
-                if ($Password != $_POST['Password']) {
+                if (!empty($Password) && md5($Password) !== $row['Password']) {
                     $Opassword_error = "Old Password is incorrect";
                 }
+
                 // check if newpassword is same as confirm new password
                 if (!empty($Password) && empty($new_password)) {
                     $Password_error = "Please enter New Password";
@@ -130,17 +131,16 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 if (!empty($new_password) && $new_password == $Password) {
                     $Password_error = "New Password cannot be same as Old Password";
                 }
-                if (!empty($new_password) && strlen($new_password) < 8) {
+                if (strlen($new_password) != 0 && strlen($Password) == 0) {
+                    $Password_error = "Please fill in password";
+                } else if (!empty($new_password) && strlen($new_password) < 8) {
                     $Password_error = "New Password should be at least 8 characters in length";
                 } elseif (!empty($new_password) && !$alphabet) {
                     $Password_error = "Password must contain at least one letter";
                 } elseif (!empty($new_password) && !$number) {
                     $Password_error = "Password must contain at least one number";
                 }
-                if (strlen($new_password) == 0) {
-                    $CPassword_error = "Please fill in new password";
-                }
-                if (strlen($new_password) == 0 || strlen($confirm_new_password) == 0) {
+                if (strlen($new_password) != 0 && strlen($confirm_new_password) == 0) {
                     $CPassword_error = "Please fill in confirm new password";
                 } elseif ($new_password != $confirm_new_password) {
                     $CPassword_error = "Confirm New Password must same with New Password";
@@ -166,14 +166,6 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                     // Execute the query
                     if ($stmt->execute()) {
                         echo "<div class='alert alert-success'>Record was saved.</div>";
-                        $Password = "";
-                        $new_password = "";
-                        $confirm_new_password = "";
-                        $fname = "";
-                        $lname = "";
-                        $gender = "";
-                        $dob = "";
-                        $status = "";
                     } else {
                         echo "<div class='alert alert-danger'>Unable to save record. Please fill in all required fields.</div>";
                     }
