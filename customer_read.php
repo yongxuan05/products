@@ -49,6 +49,13 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         // include database connection
         include 'config/database.php';
 
+        // delete message prompt will be here
+        $action = isset($_GET['action']) ? $_GET['action'] : "";
+
+        // if it was redirected from delete.php
+        if ($action == 'deleted') {
+            echo "<div class='alert alert-success'>Record was deleted.</div>";
+        }
 
         // select all data
         $query = "SELECT * FROM customers ORDER BY id ASC";
@@ -142,6 +149,18 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
     </div> <!-- end .container -->
 
     <!-- confirm delete record will be here -->
+    <script type='text/javascript'>
+        // confirm record deletion
+        function delete_user(id) {
+
+            var answer = confirm('Are you sure?');
+            if (answer) {
+                // if user clicked ok,
+                // pass the id to delete.php and execute the delete query
+                window.location = 'customer_delete.php?id=' + id;
+            }
+        }
+    </script>
 
 </body>
 
