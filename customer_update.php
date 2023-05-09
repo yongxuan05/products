@@ -55,7 +55,6 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // values to fill up our form
-            $username = $row['username'];
             $old_password = $row['Password'];
             $fname = $row['fname'];
             $lname = $row['lname'];
@@ -79,13 +78,12 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 // write update query
                 // in this case, it seemed like we have so many fields to pass and
                 // it is better to label them and not use question marks
-                $query = "UPDATE customers SET username=:username, Password=:new_password, fname=:fname, lname=:lname, gender=:gender, dob=:dob, `status`=:status WHERE id = :id";
+                $query = "UPDATE customers SET 'Password'=:new_password, fname=:fname, lname=:lname, gender=:gender, dob=:dob, `status`=:status WHERE id = :id";
 
                 // prepare query for excecution
                 $stmt = $con->prepare($query);
 
                 // posted values
-                $username = htmlspecialchars(strip_tags($_POST['username']));
                 $Password = htmlspecialchars(strip_tags($_POST['Password']));
                 $new_password = $_POST['new_password'];
                 $confirm_new_password = $_POST['confirm_new_password'];
@@ -102,14 +100,24 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 $number = preg_match('/[0-9]/', $new_password);
                 $u_number = preg_match('/[0-9]/', $username);
 
-                // check if any field is empty
-                if (strlen($username) < 6) {
-                    $username_error = "Username must be at least 6 characters";
-                } elseif (!$u_alphabet) {
-                    $username_error = "Username with alphabet only";
-                } elseif ($u_number) {
-                    $username_error = "Username no number";
+                //check if there any empty field
+                if (empty($fname)) {
+                    $fname_error = "Please enter First Name";
                 }
+                if (empty($lname)) {
+                    $lname_error = "Please enter Last Name";
+                }
+                if (empty($gender)) {
+                    $gender_error = "Please select gender";
+                }
+                if (empty($dob)) {
+                    $dob_error = "Please enter Date of Birth";
+                }
+
+                if (empty($status)) {
+                    $status_error = "Please select your Status";
+                }
+
                 // check if oldpassword is same as $Password
                 if ($Password != $_POST['Password']) {
                     $Opassword_error = "Old Password is incorrect";
@@ -118,12 +126,22 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 if (!empty($Password) && empty($new_password)) {
                     $Password_error = "Please enter New Password";
                 }
-                if (strlen($new_password) < 8) {
-                    $Password_error = "Password should be at least 8 characters in length";
-                } elseif (!$alphabet) {
+                // check if new password is same as old password
+                if (!empty($new_password) && $new_password == $Password) {
+                    $Password_error = "New Password cannot be same as Old Password";
+                }
+                if (!empty($new_password) && strlen($new_password) < 8) {
+                    $Password_error = "New Password should be at least 8 characters in length";
+                } elseif (!empty($new_password) && !$alphabet) {
                     $Password_error = "Password must contain at least one letter";
-                } elseif (!$number) {
+                } elseif (!empty($new_password) && !$number) {
                     $Password_error = "Password must contain at least one number";
+                }
+                if (strlen($new_password) == 0) {
+                    $CPassword_error = "Please fill in new password";
+                }
+                if (strlen($new_password) == 0 || strlen($confirm_new_password) == 0) {
+                    $CPassword_error = "Please fill in confirm new password";
                 } elseif ($new_password != $confirm_new_password) {
                     $CPassword_error = "Confirm New Password must same with New Password";
                 } else {
@@ -131,13 +149,12 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 }
 
                 // check if there are any errors
-                if (!isset($username_error) && !isset($Password_error) && !isset($CPassword_error)) {
+                if (!isset($username_error) && !isset($Opassword_error) && !isset($Password_error) && !isset($CPassword_error) && !isset($fname_error) && !isset($lname_error) && !isset($gender_error) && !isset($dob_error) && !isset($status_error)) {
 
                     // prepare query for execution
                     $stmt = $con->prepare($query);
 
                     // bind the parameters
-                    $stmt->bindParam(':username', $username);
                     $stmt->bindParam(':new_password', $new_password);
                     $stmt->bindParam(':fname', $fname);
                     $stmt->bindParam(':lname', $lname);
@@ -149,7 +166,6 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                     // Execute the query
                     if ($stmt->execute()) {
                         echo "<div class='alert alert-success'>Record was saved.</div>";
-                        $username = "";
                         $Password = "";
                         $new_password = "";
                         $confirm_new_password = "";
@@ -174,12 +190,6 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         <!--we have our html form here where new record information can be updated-->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post">
             <table class='table table-hover table-responsive table-bordered'>
-
-                <tr>
-                    <td style="font-weight: bold;">Username</td>
-                    <td><input type="text" name='username' class="form-control" value="<?php echo isset($username) ? htmlspecialchars($username) : ''; ?>" />
-                        <?php if (isset($username_error)) { ?><span class="text-danger"><?php echo $username_error; ?></span><?php } ?></td>
-                </tr>
 
                 <tr>
                     <td style="font-weight: bold;">First Name</td>

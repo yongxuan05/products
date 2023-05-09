@@ -93,21 +93,63 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 $manufacture_date = htmlspecialchars(strip_tags($_POST['manufacture_date']));
                 $expired_date = htmlspecialchars(strip_tags($_POST['expired_date']));
 
-                // bind the parameters
-                $stmt->bindParam(':name', $name);
-                $stmt->bindParam(':catname', $catname);
-                $stmt->bindParam(':description', $description);
-                $stmt->bindParam(':price', $price);
-                $stmt->bindParam(':promotion_price', $promotion_price);
-                $stmt->bindParam(':manufacture_date', $manufacture_date);
-                $stmt->bindParam(':expired_date', $expired_date);
-                $stmt->bindParam(':id', $id);
+                // check if any field is empty
+                if (empty($name)) {
+                    $name_error = "Please enter product name";
+                }
+                if (empty($catname)) {
+                    $catname_error = "Please select category";
+                }
+                if (empty($description)) {
+                    $description_error = "Please enter product description";
+                }
+                if (empty($price)) {
+                    $price_error = "Please enter product price";
+                }
 
-                // Execute the query
-                if ($stmt->execute()) {
-                    echo "<div class='alert alert-success'>Record was updated.</div>";
-                } else {
-                    echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                if (empty($manufacture_date)) {
+                    $manufacture_date_error = "Please enter manufacture date";
+                }
+
+                // check if expired date  fill up & later than manufacture date
+                if (!empty($expired_date)) {
+                    if (strtotime($expired_date) <= strtotime($manufacture_date)) {
+                        $expired_date_error = "Expired date should be later than manufacture date";
+                    }
+                }
+
+                // check if user fill up promotion price & must cheaper than original price 
+                if (!empty($promotion_price)) {
+                    if ($promotion_price >= $price) {
+                        $promotion_price_error = "Promotion price must be cheaper than original price";
+                    }
+                }
+
+                if (!empty($catname)) {
+                    $stmt->bindParam(':catname', $catname);
+                }
+
+                // check if there are any errors
+                if (!isset($name_error) && !isset($catname_error) && !isset($description_error) && !isset($price_error) && !isset($promotion_price_error) && !isset($manufacture_date_error) && !isset($expired_date_error)) {
+
+
+
+                    // bind the parameters
+                    $stmt->bindParam(':name', $name);
+                    $stmt->bindParam(':catname', $catname);
+                    $stmt->bindParam(':description', $description);
+                    $stmt->bindParam(':price', $price);
+                    $stmt->bindParam(':promotion_price', $promotion_price);
+                    $stmt->bindParam(':manufacture_date', $manufacture_date);
+                    $stmt->bindParam(':expired_date', $expired_date);
+                    $stmt->bindParam(':id', $id);
+
+                    // Execute the query
+                    if ($stmt->execute()) {
+                        echo "<div class='alert alert-success'>Record was updated.</div>";
+                    } else {
+                        echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                    }
                 }
             }
             // show errors
@@ -121,39 +163,69 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post">
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
-                    <td>Name</td>
-                    <td><input type='text' name='name' value="<?php echo htmlspecialchars($name, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td style="font-weight: bold;">Name</td>
+                    <td><input type='text' name='name' class="form-control" value="<?php echo isset($name) ? htmlspecialchars($name) : ''; ?>" />
+                        <?php if (isset($name_error)) { ?><span class="text-danger"><?php echo $name_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td>Category</td>
-                    <td><input type='text' name='catname' value="<?php echo htmlspecialchars($catname, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td style="font-weight: bold;">Category</td>
+                    <td>
+                        <select name="catname" class="form-control">
+                            <option value="">-- Select Category --</option>
+                            <?php
+                            // include database connection
+                            include 'config/database.php';
+                            // fetch categories from the database
+                            $query = "SELECT id, catname FROM category ORDER BY catname";
+                            $stmt = $con->prepare($query);
+                            $stmt->execute();
+                            $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            // dynamically populate the dropdown list with categories
+                            foreach ($categories as $category) {
+                                $selected = isset($catname) && $catname == $category['catname'] ? 'selected' : '';
+                                echo "<option value='{$category['catname']}' {$selected}>{$category['catname']}</option>";
+                            }
+                            ?>
+                        </select>
+                        <?php if (isset($catname_error)) : ?>
+                            <span class="text-danger"><?php echo $catname_error; ?></span>
+                        <?php endif; ?>
+                    </td>
                 </tr>
 
                 <tr>
-                    <td>Description</td>
-                    <td><textarea name='description' class='form-control'><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></textarea></td>
+                    <div class="form-group">
+                        <td style="font-weight: bold;">Description</td>
+                        <td> <textarea class="form-control" name="description"><?php echo htmlspecialchars($description, ENT_QUOTES); ?></textarea>
+                            <?php if (isset($description_error)) { ?><span class="text-danger"><?php echo  $description_error; ?></span><?php } ?></td>
+                    </div>
                 </tr>
 
                 <tr>
-                    <td>Price</td>
-                    <td><input type='text' name='price' value="<?php echo htmlspecialchars($price, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td style="font-weight: bold;">Price</td>
+                    <td><input type="number" name="price" class="form-control" value="<?php echo isset($price) ? htmlspecialchars($price) : ''; ?>" />
+                        <?php if (isset($price_error)) { ?><span class="text-danger"><?php echo $price_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td>Promition Price</td>
-                    <td><input type='text' name='promotion_price' value="<?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td style="font-weight: bold;">Promotion Price</td>
+                    <td><input type="number" name="promotion_price" class="form-control" value="<?php echo isset($promotion_price) ? htmlspecialchars($promotion_price) : ''; ?>" />
+                        <?php if (isset($promotion_price_error)) { ?><span class="text-danger"><?php echo $promotion_price_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td>Manufacture Date</td>
-                    <td><input type='date' name='manufacture_date' value="<?php echo htmlspecialchars($manufacture_date, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td style="font-weight: bold;">Manufacture Date</td>
+                    <td><input type="date" name="manufacture_date" class="form-control" value="<?php echo isset($manufacture_date) ? htmlspecialchars($manufacture_date) : ''; ?>" />
+                        <?php if (isset($manufacture_date_error)) { ?><span class="text-danger"><?php echo $manufacture_date_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
-                    <td>Expiry Date</td>
-                    <td><input type='date' name='expired_date' value="<?php echo htmlspecialchars($expired_date, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td style="font-weight: bold;">Expired Date</td>
+                    <td><input type="date" name="expired_date" class="form-control" value="<?php echo isset($expired_date) ? htmlspecialchars($expired_date) : ''; ?>" />
+                        <?php if (isset($expired_date_error)) { ?><span class="text-danger"><?php echo $expired_date_error; ?></span><?php } ?></td>
                 </tr>
+
 
                 <tr>
                     <td></td>
