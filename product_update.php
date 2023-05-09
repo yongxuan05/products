@@ -163,7 +163,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post">
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
-                    <td style="font-weight: bold;">Name</td>
+                    <td style="font-weight: bold;">Product Name</td>
                     <td><input type='text' name='name' class="form-control" value="<?php echo isset($name) ? htmlspecialchars($name) : ''; ?>" />
                         <?php if (isset($name_error)) { ?><span class="text-danger"><?php echo $name_error; ?></span><?php } ?></td>
                 </tr>
