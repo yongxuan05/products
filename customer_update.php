@@ -108,9 +108,9 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 } elseif (!$u_alphabet) {
                     $username_error = "Username with alphabet only";
                 } elseif ($u_number) {
-                    $username_error = "Username  no number";
+                    $username_error = "Username no number";
                 }
-                // check if oldpassword is same as password
+                // check if oldpassword is same as $Password
                 if ($Password != $_POST['Password']) {
                     $Opassword_error = "Old Password is incorrect";
                 }
