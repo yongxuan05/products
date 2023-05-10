@@ -23,7 +23,7 @@
             $query = "SELECT products.id, products.name, products.price, COALESCE(SUM(order_details.quantity), 0) AS total 
             FROM products
             LEFT JOIN order_details ON order_details.product_id = products.id
-            LEFT JOIN orders ON orders.id = order_details.order_id AND orders.created >= DATE(NOW()) - INTERVAL 7 DAY 
+            LEFT JOIN orders ON orders.id = order_details.order_id  
             GROUP BY products.id, products.name, products.price
             HAVING total >= 100";
             $stmt = $con->prepare($query);

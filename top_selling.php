@@ -25,7 +25,6 @@
             FROM order_details 
             JOIN products ON order_details.product_id = products.id
             JOIN orders ON orders.id = order_details.order_id
-            WHERE orders.created >= DATE(NOW()) - INTERVAL 7 DAY 
             GROUP BY products.id, products.name, products.price
             ORDER BY total DESC 
             LIMIT 1";
@@ -48,7 +47,7 @@
             </div>
             <div class="card-body" style="background-color: white">
                 <div class="row">
-                    <?php if (isset($top_selling_product)) : ?>
+                    <?php if ($top_selling_product && is_array($top_selling_product)) : ?>
                         <div class="col-md-4">
                             <div class="card-body" style="color: black;">
                                 <h3 class="card-title" style="font-weight: bold; margin:0;"><?php echo ucfirst($top_selling_product['name']); ?></h3>

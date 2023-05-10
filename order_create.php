@@ -49,7 +49,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                     $customer_name_error = "Please select username";
                 }
 
-                if (empty($product)) {
+                if (empty($products)) {
                     $products_error = "Please select product";
                 }
                 if (empty($quantities)) {
@@ -174,7 +174,11 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                                 <?php endif; ?>
 
                                 <label>Quantity</label>
-                                <input type="number" name="quantity" class="form-control" value="<?php echo isset($quantity) ? htmlspecialchars($quantity) : ''; ?>" />
+                                <?php
+                                $count = isset($quantities) ? count($quantities) : 1;
+                                for ($i = 0; $i < $count; $i++)
+                                ?>
+                                <input type="number" name="quantity[]" class="form-control" value="<?php echo isset($quantities[$i]) ? htmlspecialchars($quantities[$i]) : ''; ?>" />
                                 <?php if (isset($quantity_error)) { ?>
                                     <div class="error-message">
                                         <span class="text-danger"><?php echo $quantity_error; ?></span>
