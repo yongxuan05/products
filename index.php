@@ -26,6 +26,9 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
     <div class="container" style="margin-top: 100px; margin-bottom: 100px;">
         <div class="container" style="margin-bottom: 50px;">
+            <?php include 'latest_order.php' ?>
+        </div>
+        <div class="container" style="margin-bottom: 50px;">
             <?php include 'latest_product.php' ?>
         </div>
         <div class="container" style="margin-bottom: 50px;">
