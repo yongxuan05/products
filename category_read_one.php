@@ -104,7 +104,8 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             echo "<td>" . (($expired_date && $expired_date != '0000-00-00') ? $expired_date : '-') . "</td>";
             echo "<td>";
 
-            echo "<a href='update.php?id={$id}' class='btn btn-primary m-r-1em'>Edit</a>";
+            // update the anchor tag's href attribute to include the product ID
+            echo "<a href='product_update.php?id={$products_id}' class='btn btn-primary m-r-1em'>Edit</a>";
         }
 
         // end table

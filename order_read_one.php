@@ -29,6 +29,39 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
     <div class="container" style="margin-top: 90px;">
         <div class="page-header">
             <h1>Details</h1>
+            <?php
+            // get passed parameter value, in this case, the record ID
+            $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+
+            //include database connection
+            include 'config/database.php';
+
+            // read current record's data
+            try {
+                // fetch customer name and order date
+                $query_customer = "SELECT c.username, o.created 
+                FROM orders o
+                JOIN customers c ON o.customer_name = c.username
+                WHERE o.id = ? 
+                LIMIT 1";
+
+                $stmt_customer = $con->prepare($query_customer);
+                $stmt_customer->bindParam(1, $id);
+                $stmt_customer->execute();
+
+                if ($stmt_customer->rowCount() > 0) {
+                    $row_customer = $stmt_customer->fetch(PDO::FETCH_ASSOC);
+                    $customer_name = $row_customer['username'];
+                    $order_date = $row_customer['created'];
+                } else {
+                    die('ERROR: Customer data not found.');
+                }
+            } catch (PDOException $exception) {
+                die('ERROR: ' . $exception->getMessage());
+            }
+            ?>
+            <h6 class="card-text" style="font-weight: bold; margin-top:25px;">Customer Name: <span style="font-weight: lighter;"> <?php echo htmlspecialchars($customer_name, ENT_QUOTES); ?></h6>
+            <h6 class="card-text" style="font-weight: bold; margin-bottom:20px;">Order Date: <span style="font-weight: lighter;"><?php echo htmlspecialchars($order_date, ENT_QUOTES); ?></h6>
         </div>
 
         <!-- PHP read one record will be here -->
