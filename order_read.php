@@ -104,20 +104,20 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 $font_weight = ($row_number % 2 == 0) ? 'lighter' : 'bold';
 
                 echo "<tr style='font-weight: {$font_weight}'>";
-                echo "<td style='width: 5%'>{$id}</td>";
-                echo "<td style='width: 10%'>{$customer_name}</td>";
+                echo "<td style='width: 10%'>{$id}</td>";
+                echo "<td style='width: 80%'>{$customer_name}</td>";
                 echo "<td style='width: 10%'>";
 
                 // read one record
                 echo "<a href='order_read_one.php?id={$id}' class='btn btn-info m-r-1em' style='margin-right: 10px;'>Read</a>";
 
                 // we will use this links on next part of this post
-                echo "<a href='update.php?id={$id}' class='btn btn-primary m-r-1em' style='margin-right: 10px;'>Edit</a>";
+                //echo "<a href='update.php?id={$id}' class='btn btn-primary m-r-1em' style='margin-right: 10px;'>Edit</a>";
 
                 // we will use this links on next part of this post
-                echo "<a href='#' onclick='delete_user({$id});'  class='btn btn-danger' style='margin-right: 10px;'>Delete</a>";
-                echo "</td>";
-                echo "</tr>";
+                // echo "<a href='#' onclick='delete_user({$id});'  class='btn btn-danger' style='margin-right: 10px;'>Delete</a>";
+                // echo "</td>";
+                // echo "</tr>";
 
                 // increment row number
                 $row_number++;
