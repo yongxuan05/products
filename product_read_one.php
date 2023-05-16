@@ -77,27 +77,27 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
         <!--we have our html table here where the record will be displayed-->
         <table class='table table-hover table-responsive table-bordered'>
             <tr>
-                <td>Name</td>
+                <td style="font-weight: bold;">Name</td>
                 <td><?php echo htmlspecialchars($name, ENT_QUOTES);  ?></td>
             </tr>
 
             <tr>
-                <td>Category</td>
+                <td style="font-weight: bold;">Category</td>
                 <td><?php echo htmlspecialchars($catname, ENT_QUOTES);  ?></td>
             </tr>
 
             <tr>
-                <td>Description</td>
+                <td style="font-weight: bold;">Description</td>
                 <td><?php echo htmlspecialchars($description, ENT_QUOTES); ?></td>
             </tr>
 
             <tr>
-                <td>Price</td>
+                <td style="font-weight: bold;">Price</td>
                 <td><?php echo number_format($price, 2);  ?></td>
             </tr>
 
             <tr>
-                <td>Promotional Price</td>
+                <td style="font-weight: bold;">Promotional Price</td>
                 <td>
                     <?php
                     if (!empty($promotion_price)) {
@@ -111,12 +111,12 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
             </tr>
 
             <tr>
-                <td>Manufacture Date</td>
+                <td style="font-weight: bold;">Manufacture Date</td>
                 <td><?php echo (($manufacture_date && $manufacture_date != '0000-00-00') ? $manufacture_date : '-'); ?></td>
             </tr>
 
             <tr>
-                <td>Expiry Date</td>
+                <td style="font-weight: bold;">Expiry Date</td>
                 <td><?php echo (($expired_date && $expired_date != '0000-00-00') ? $expired_date : '-'); ?></td>
             </tr>
 
