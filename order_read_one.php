@@ -136,7 +136,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 echo "</table>";
 
                 // display total price
-                echo "<div style='text-align: right; margin-top: 15px;'><strong>Total Price: " . htmlspecialchars($total_price, ENT_QUOTES) . "</strong></div>";
+                echo "<div style='text-align: right; margin-top: 15px;'><strong>Total Price: "  .  "RM " . htmlspecialchars(number_format($total_price, 2), ENT_QUOTES) . "</strong></div>";
             } else {
                 // no rows returned for the given order_id
                 echo "No orders found.";

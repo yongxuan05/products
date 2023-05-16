@@ -52,8 +52,17 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 if (empty($products)) {
                     $products_error = "Please select product";
                 }
+
                 if (empty($quantities)) {
                     $quantity_error = "Please enter quantity";
+                } else {
+                    // Check if any quantity is 0
+                    foreach ($quantities as $quantity) {
+                        if ($quantity == 0) {
+                            $quantity_error = "Quantity cannot be 0";
+                            break;
+                        }
+                    }
                 }
 
 
