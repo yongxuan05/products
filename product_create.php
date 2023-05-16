@@ -186,13 +186,13 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
 
                 <tr>
                     <td style="font-weight: bold;">Price</td>
-                    <td><input type="number" name="price" class="form-control" value="<?php echo isset($price) ? htmlspecialchars($price) : ''; ?>" />
+                    <td><input type="number" step="0.01" name="price" class="form-control" value="<?php echo isset($price) ? htmlspecialchars($price) : ''; ?>" />
                         <?php if (isset($price_error)) { ?><span class="text-danger"><?php echo $price_error; ?></span><?php } ?></td>
                 </tr>
 
                 <tr>
                     <td style="font-weight: bold;">Promotion Price</td>
-                    <td><input type="number" name="promotion_price" class="form-control" value="<?php echo isset($promotion_price) ? htmlspecialchars($promotion_price) : ''; ?>" />
+                    <td><input type="number" step="0.01" name="promotion_price" class="form-control" value="<?php echo isset($promotion_price) ? htmlspecialchars($promotion_price) : ''; ?>" />
                         <?php if (isset($promotion_price_error)) { ?><span class="text-danger"><?php echo $promotion_price_error; ?></span><?php } ?></td>
                 </tr>
 
