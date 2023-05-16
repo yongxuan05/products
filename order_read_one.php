@@ -105,7 +105,6 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 echo "<td><strong>Quantity</strong></td>";
                 echo "<td style='text-align:right'><strong>Price</strong></td>";
                 echo "<td style='text-align:right'><strong>Sub Price</strong></td>";
-                echo "<td><strong>Order Date</strong></td>";
                 echo "</tr>";
 
                 $row_number = 0;
@@ -127,7 +126,6 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                     echo "<td>" . htmlspecialchars($quantity, ENT_QUOTES) . "</td>";
                     echo "<td style='text-align:right'>" .  "RM " . htmlspecialchars(number_format($price, 2), ENT_QUOTES) . "</td>";
                     echo "<td style='text-align:right'>" .  "RM " . htmlspecialchars(number_format($total_price_row, 2), ENT_QUOTES) . "</td>";
-                    echo "<td>" . htmlspecialchars($created, ENT_QUOTES) . "</td>";
                     echo "</tr>";
 
                     // increment row number

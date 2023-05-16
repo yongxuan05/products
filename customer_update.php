@@ -112,6 +112,8 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 }
                 if (empty($dob)) {
                     $dob_error = "Please enter Date of Birth";
+                } elseif (strtotime($dob) > time()) {
+                    $dob_error = "Date of Birth cannot be in the future";
                 }
 
                 if (empty($status)) {
