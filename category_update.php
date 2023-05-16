@@ -92,8 +92,7 @@ if (!isset($_SESSION['username'])) { // If the user is not logged in
                 }
 
                 // check if there are any errors
-                if (!isset($catname_error) && !isset($derc_error)) {
-
+                if (!isset($catname_error) && !isset($descr_error)) {
 
 
                     // bind the parameters
